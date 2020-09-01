@@ -1,11 +1,1 @@
-{
-    "users": [
-        {
-            "id": 0,
-            "userName": "matt",
-            "password": "asd",
-            "role": "sa",
-            "email": "matt@home.com"
-        }
-    ]
-}
+[{"id":0,"name":"matt","email":"matt@home.com","password":"asd","role":"Super Admin"},{"id":1,"name":"john","email":"john@home.com","password":"asd","role":"Group Admin"},{"id":2,"name":"tony","email":"tony@home.com","password":"asd","role":"Group Assist"},{"id":3,"name":"mary","email":"mary@home.com","password":"asd","role":"Group Admin"}]

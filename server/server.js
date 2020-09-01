@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(__dirname + '/../dist/chat'));
 app.post('/login', require('./login.js'));
+app.post('/getuser', require('./getuser.js'));
+app.post('/adduser', require('./adduser.js'));
 
 sockets.connect(io, PORT);
 server.listen(http, PORT);

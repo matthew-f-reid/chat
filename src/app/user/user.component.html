@@ -1,0 +1,17 @@
+<div class="container">
+    <form>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" [(ngModel)]="name" name="name" id="name" class="form-control"/>
+            <label for="email">Email</label>
+            <input type="text" [(ngModel)]="email" name="email" id="email" class="form-control"/>
+            <label for="password">Password</label>
+            <input type="text" [(ngModel)]="password" name="password" id="password" class="form-control"/>
+            <select [(ngModel)]="rolelist" name="rolelist">
+                <option [ngValue]="null">Select Role</option>
+                <option *ngFor="let role of roles">{{role}}</option>
+            </select><br/><br/>
+        </div>
+        <button *ngIf="currentRole == 'Super Admin'" (click)="addUser()" class="btn btn-primary">Add User</button>
+    </form>
+</div>

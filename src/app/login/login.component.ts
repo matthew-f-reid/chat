@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   password = "";
   valid;
 
+
   constructor(private route: ActivatedRoute, private router: Router, private httpclient: HttpClient){}
 
 
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
       this.password = this.route.snapshot.params.password;
   }
 
-  onClick(){
+  login(){
     let userpwd = {name: this.name, password: this.password};
     console.log(userpwd);
     this.httpclient.post(BACKEND_URL + '/login', userpwd, httpOptions)
@@ -39,7 +40,8 @@ export class LoginComponent implements OnInit {
         console.log(sessionStorage.getItem('role'));
         console.log(sessionStorage.getItem('email'));
         this.router.navigateByUrl('chat');
-        
+      } else {
+        alert("incorrect username or password");
       }
     });
   }

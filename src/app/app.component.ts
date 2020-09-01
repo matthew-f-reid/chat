@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'chat';
+  loggedIn = true;
+
+  constructor(private route: ActivatedRoute, private router: Router) {   }
+
+  logout(){
+    sessionStorage.clear();
+    this.router.navigateByUrl('/');
+  }
 }

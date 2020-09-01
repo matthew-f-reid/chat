@@ -14,30 +14,34 @@ module.exports = function(req, res){
       if(!req.body){
         return res.sendStatus(400);
       } else {
-        console.log(users.users[0].userName);
-        var customer = {};
-        customer.name = req.body.name;
-        console.log("customer name: ", customer.name);
-        customer.password = req.body.password;
-        console.log("customer pass: ", customer.password);
-        console.log("JSON name: ", users.users[0].userName);
+        var user = {};
+        user.name = req.body.name;
+        user.password = req.body.password;
+        console.log("req.body.name");
+        console.log(req.body.name);
+        console.log("users[0].name");
+        console.log(users[0].name);
+        console.log("req.body.password");
+        console.log(req.body.password);
+        console.log("users[0].password");
+        console.log(users[0].password);
 
-        for(let i = 0; i < users.users.length; i++){
-          if(req.body.name == users.users[i].userName && req.body.password == users.users[i].password){
-            customer.valid = true;
-            customer.id = users.users[i].id;
-            customer.role = users.users[i].role;
-            customer.email = users.users[i].email;
+        for(let i = 0; i < users.length; i++){
+          if(req.body.name == users[i].name && req.body.password == users[i].password){
+            user.valid = true;
+            user.id = users[i].id;
+            user.role = users[i].role;
+            user.email = users[i].email;
           }
         }
 
-        if(customer.valid){
-          customer.valid = true;
+        if(user.valid){
+          user.valid = true;
         } else {
-          customer.valid = false;
+          user.valid = false;
         }
 
-        res.send(customer);
+        res.send(user);
       }
     }
     catch(err){

@@ -1,3 +1,4 @@
+
 <div class="wrapper fadeInDown">
     <div id="formContent">
       <!-- Tabs Titles -->
@@ -10,7 +11,7 @@
       <form>
         <input type="text" [(ngModel)]="name" id="name" class="fadeIn second" name="name" placeholder="name" value="matt">
         <input type="text" [(ngModel)]="password" id="password" class="fadeIn third" name="password" placeholder="password" value="asd">
-        <button (click)="onClick()" class="fadeIn fourth">Submit</button>
+        <input type="submit" (click)="login()" class="fadeIn fourth" value="Log In">
       </form>
   
       <!-- Remind Passowrd -->
