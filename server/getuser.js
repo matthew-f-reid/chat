@@ -6,25 +6,22 @@ module.exports = function(req, res){
       console.log("file read failed: ", err);
       return;
     }
-    
     try{
       const file = JSON.parse(jsonString);
       console.log(file);
-      
       if(!req.body){
         return res.sendStatus(400);
       } else {
-        
-          var users = [];
-        for(let i = 0; i < file.length; i++){
+        var users = [];
+        for(var i = 0; i < file.length; i++){
           user = {};
           user.id = file[i].id;
           user.name = file[i].name;
           user.email = file[i].email;
           user.role = file[i].role;
+          user.password = file[i].password;
           users.push(user);
         }
-        
         res.send(users);
       }
     }

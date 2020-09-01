@@ -37,6 +37,7 @@ export class UserComponent implements OnInit {
     this.httpclient.post(BACKEND_URL + '/getuser', userpwd, httpOptions)
     .subscribe((data: any) => {
       console.log(data);
+      this.users = [];
       for(var i = 0; i < data.length; i++){
         this.users.push(data[i]);
       }
@@ -47,10 +48,22 @@ export class UserComponent implements OnInit {
     let user = {name: this.name, email: this.email, role: this.rolelist, password: this.password};
     this.httpclient.post(BACKEND_URL + '/adduser', user, httpOptions)
     .subscribe((data: any) => {
+      this.users.push(data[data.length-1]);
       this.name = "";
       this.email = "";
       this.rolelist = "";
       this.password = "";
+    });
+    //this.getUsers();
+  }
+  updateUser(){
+
+  }
+  deleteUser(name){
+    let user = {"name": name};
+    this.httpclient.post(BACKEND_URL + '/deluser', user, httpOptions)
+    .subscribe((data: any) => {
+      this.users = data;
     });
   }
 

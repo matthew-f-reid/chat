@@ -1,5 +1,5 @@
-<div class="container">
-    <form>
+<div *ngIf="currentRole == 'Super Admin'" class="container">
+    <form >
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" [(ngModel)]="name" name="name" id="name" class="form-control"/>
@@ -11,7 +11,40 @@
                 <option [ngValue]="null">Select Role</option>
                 <option *ngFor="let role of roles">{{role}}</option>
             </select><br/><br/>
+            <button (click)="addUser()" class="btn btn-primary">Add User</button>
         </div>
-        <button *ngIf="currentRole == 'Super Admin'" (click)="addUser()" class="btn btn-primary">Add User</button>
     </form>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 200px;">Name</th>
+                <th scope="col" style="width: 200px;">Email</th>
+                <th scope="col" style="width: 200px;">Password</th>
+                <th scope="col">Role</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <th scope="row">
+                    <input type="text" #name class="form-control" value="{{user.name}}"/>
+                </th>
+                <td>
+                    <input type="text" #email class="form-control" value="{{user.email}}"/>
+                </td>
+                <td>
+                    <input type="text" #password class="form-control" value="{{user.password}}"/>
+                </td>
+                <td><select>
+                    <option value="{{user.role}}">Select Role</option>
+                    <option *ngFor="let role of roles">{{role}}</option>
+                </select></td>
+                <td><button (click)="updateUser(name.value, email.value, password.value, role.value)" class="btn btn-primary">Update</button></td>
+                <td><button (click)="deleteUser(name.value)" class="btn btn-primary">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 </div>

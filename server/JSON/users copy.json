@@ -1,25 +1,7 @@
-{
-    "users": [
-        {
-            "id": 0,
-            "name": "matt",
-            "password": "asd",
-            "role": "Super Admin",
-            "email": "matt@home.com"
-        },
-        {
-            "id": 1,
-            "name": "john",
-            "password": "asd",
-            "role": "Group Admin",
-            "email": "john@home.com"
-        },
-        {
-            "id": 2,
-            "name": "tony",
-            "password": "asd",
-            "role": "Group Assist",
-            "email": "tony@home.com"
-        }
-    ]
-}
+[
+    {"id":0,"name":"matt","email":"matt@home.com","role":"Super Admin","password":"asd"},
+    {"id":1,"name":"john","email":"john@home.com","role":"Group Admin","password":"asd"},
+    {"id":2,"name":"tony","email":"tony@home.com","role":"Group Assist","password":"asd"},
+    {"id":3,"name":"mary","email":"mary@home.com","role":"Group Admin","password":"asd"},
+    {"id":5,"name":"harry","email":"harry@home.com","role":"Group Assist","password":"asd"}
+]

@@ -16,6 +16,7 @@ module.exports = function(req, res){
                 user.name = file[i].name;
                 user.email = file[i].email;
                 user.role = file[i].role;
+                user.password = file[i].password;
                 users.push(user);
                 this.id++;
             }
@@ -28,6 +29,7 @@ module.exports = function(req, res){
                 user.name = req.body.name;
                 user.email = req.body.email;
                 user.role = req.body.role;
+                user.password = req.body.password;
                 users.push(user);
                 fs.writeFile('./JSON/users.json', JSON.stringify(users), function(err){
                     if(err) throw err;
