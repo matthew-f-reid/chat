@@ -20,8 +20,12 @@ export class ChatComponent implements OnInit {
   isinRoom = false;
   newroom = "";
   numusers = 0;
+  userRole = "";
 
   constructor(private socketservice:SocketService, private route: ActivatedRoute) {
+    if(sessionStorage.getItem('role')){
+      this.userRole = sessionStorage.getItem('role');
+    }
    }
 
   joinroom(){

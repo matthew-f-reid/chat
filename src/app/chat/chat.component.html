@@ -12,7 +12,7 @@
         <select [(ngModel)]="roomslist" name="roomslist">
             <option [ngValue]="null">Select Room</option>
             <option *ngFor="let room of rooms">{{room}}</option>
-        </select><br/><br/>
+        </select><br/><br/>>
         <label for="newroom">New Room</label>
         <input type="text" [(ngModel)]="newroom" name="newroom" id="newroom" class="form-control"/>
         <button (click)="createroom()" class="btn btn-primary">Create New room</button>

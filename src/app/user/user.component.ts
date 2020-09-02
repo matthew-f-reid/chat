@@ -21,6 +21,7 @@ export class UserComponent implements OnInit {
   user = "";
   password = "";
   currentRole = "";
+  id = "";
 
   constructor(private route: ActivatedRoute, private httpclient: HttpClient) { }
 
@@ -48,16 +49,24 @@ export class UserComponent implements OnInit {
     let user = {name: this.name, email: this.email, role: this.rolelist, password: this.password};
     this.httpclient.post(BACKEND_URL + '/adduser', user, httpOptions)
     .subscribe((data: any) => {
-      this.users.push(data[data.length-1]);
-      this.name = "";
-      this.email = "";
-      this.rolelist = "";
-      this.password = "";
+      if(data.length > this.users.length){
+        this.users.push(data[data.length-1]);
+        this.name = "";
+        this.email = "";
+        this.rolelist = "";
+        this.password = "";
+      } else {
+        alert("name is already being used try another");
+      }
     });
     //this.getUsers();
   }
-  updateUser(){
-
+  updateUser(id, name, email, password, role){
+    let user = {id: id, name: name, email: email, role: role, password: password};
+    this.httpclient.post(BACKEND_URL + '/updateuser', user, httpOptions)
+    .subscribe((data: any) => {
+      console.log(data);
+    });
   }
   deleteUser(name){
     let user = {"name": name};

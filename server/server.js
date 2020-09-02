@@ -17,6 +17,7 @@ app.post('/login', require('./login.js'));
 app.post('/getuser', require('./getuser.js'));
 app.post('/adduser', require('./adduser.js'));
 app.post('/deluser', require('./deluser.js'));
+app.post('/updateuser', require('./updateuser.js'));
 
 sockets.connect(io, PORT);
 server.listen(http, PORT);
