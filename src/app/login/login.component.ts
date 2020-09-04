@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
 };
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = 'http://192.168.0.3:3000';
 
 @Component({
   selector: 'app-login',
@@ -29,16 +29,12 @@ export class LoginComponent implements OnInit {
 
   login(){
     let userpwd = {name: this.name, password: this.password};
-    console.log(userpwd);
     this.httpclient.post(BACKEND_URL + '/login', userpwd, httpOptions)
     .subscribe((data: any) => {
       if (data.valid){
         sessionStorage.setItem('name', data.name);
         sessionStorage.setItem('role', data.role);
         sessionStorage.setItem('email', data.email);
-        console.log(sessionStorage.getItem('name'));
-        console.log(sessionStorage.getItem('role'));
-        console.log(sessionStorage.getItem('email'));
         this.router.navigateByUrl('chat');
       } else {
         alert("incorrect username or password");

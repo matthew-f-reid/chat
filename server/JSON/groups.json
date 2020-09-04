@@ -1,0 +1,15 @@
+[
+  {
+    "groupName": "Automotive",
+    "rooms": ["engine","panels","paint"],
+    "users": [{"name":"matt","role":"Super Admin"},{"name":"tony","role":"Group Admin"}],
+    "mod": {"name":"matt","role":"Super Admin"}
+  },
+  {
+    "groupName": "House",
+    "rooms": ["doors","walls","paint"],
+    "users": [{"name":"matt","role":"Super Admin"},{"name":"mary","role":"Group Admin"}],
+    "mod": {"name":"matt","role":"Super Admin"}
+  }
+]
+

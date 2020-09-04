@@ -22,7 +22,7 @@ module.exports = {
                     chat.emit('roomlist', JSON.stringify(rooms));
                 }
             });
-            
+
             socket.on('roomlist', (m) => {
                 chat.emit('roomlist', JSON.stringify(rooms));
             });
@@ -37,9 +37,11 @@ module.exports = {
                 }
                 chat.in(room).emit('numusers', usercount);
             });
-            
-            socket.on("joinRoom", (room) => {
 
+            socket.on("joinRoom", (room) => {
+                
+                console.log("room");
+                console.log(room);
                 if(rooms.includes(room)){
                     socket.join(room, () => {
                         var inroomSocketarray = false;
@@ -71,9 +73,9 @@ module.exports = {
                     return chat.in(room).emit("joined", room);
                 }
             });
-            
+
             socket.on("leaveRoom", (room) => {
-            
+
                 for(i = 0; i < socketRoom.length; i++){
                     if(socketRoom[i][0] == socket.id){
                         socketRoom.splice(i, 1);
@@ -81,7 +83,7 @@ module.exports = {
                         chat.to(room).emit("notice", "a user has left");
                     }
                 }
-                
+
                 for(j = 0; j < socketRoomnum.length; j++){
                     if(socketRoomnum[j][0] == room){
                         socketRoomnum[j][1] = socketRoomnum[j][1]-1;
@@ -91,7 +93,7 @@ module.exports = {
                     }
                 }
             });
-            
+
             socket.on("disconnect", () => {
                 chat.emit("disconnect");
                 for(i = 0; i < socketRoom.length; i++){
@@ -99,7 +101,7 @@ module.exports = {
                         socketRoom.splice(i, 1);
                     }
                 }
-                
+
                 for(j = 0; j < socketRoomnum.length; j++){
                     if(socketRoomnum[j][0] == socket.room){
                         socketRoomnum[j][1] = socketRoomnum[j][1]-1;

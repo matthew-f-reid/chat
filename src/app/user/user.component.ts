@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
 };
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = 'http://192.168.0.3:3000';
 
 @Component({
   selector: 'app-user',
@@ -16,7 +16,7 @@ export class UserComponent implements OnInit {
   rolelist = "";
   name = "";
   email = "";
-  roles = ['Super Admin', 'Group Admin', 'Group Assist'];
+  roles = ['Super Admin', 'Group Admin', 'Group Assist', 'User'];
   users = [];
   user = "";
   password = "";
@@ -37,14 +37,13 @@ export class UserComponent implements OnInit {
     let userpwd = {name: this.name, password: this.email};
     this.httpclient.post(BACKEND_URL + '/getuser', userpwd, httpOptions)
     .subscribe((data: any) => {
-      console.log(data);
       this.users = [];
       for(var i = 0; i < data.length; i++){
         this.users.push(data[i]);
       }
     });
   }
-  
+
   addUser(){
     let user = {name: this.name, email: this.email, role: this.rolelist, password: this.password};
     this.httpclient.post(BACKEND_URL + '/adduser', user, httpOptions)
@@ -59,13 +58,16 @@ export class UserComponent implements OnInit {
         alert("name is already being used try another");
       }
     });
-    //this.getUsers();
   }
   updateUser(id, name, email, password, role){
+    console.log(id);
+    console.log(name);
+    console.log(email);
+    console.log(password);
+    console.log(role);
     let user = {id: id, name: name, email: email, role: role, password: password};
     this.httpclient.post(BACKEND_URL + '/updateuser', user, httpOptions)
     .subscribe((data: any) => {
-      console.log(data);
     });
   }
   deleteUser(name){

@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { exitCode } = require('process');
 
 module.exports = function(req, res){
     id = 0;
@@ -48,7 +47,6 @@ module.exports = function(req, res){
                     res.send(users);
                 } else {
                     console.log("exist");
-                    console.log(users);
                     res.send(users);
                 }
             }

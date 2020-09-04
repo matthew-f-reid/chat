@@ -30,8 +30,6 @@ module.exports = function(req, res){
                     user.email = req.body.email;
                     user.role = req.body.role;
                     user.password = req.body.password;
-                    console.log("update user");
-                    console.log(user);
                     users.splice(i, 1, user);
                 }
             }

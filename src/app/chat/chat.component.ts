@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SocketService } from '../services/socket.service';
 
-const SERVER_URL = 'http://localhost:3000';
+const SERVER = 'http://192.168.0.3:3000';
 
 @Component({
   selector: 'app-chat',
@@ -13,7 +13,7 @@ export class ChatComponent implements OnInit {
   private socket;
   messagecontent = "";
   messages = [];
-  rooms = [];
+  rooms = ['room1','room2'];
   roomslist = "";
   roomnotice = "";
   currentroom = "";
@@ -35,7 +35,7 @@ export class ChatComponent implements OnInit {
   }
 
   clearnotice(){
-    this.roomslist = "";
+    this.roomnotice = "";
   }
 
   leaveroom(){

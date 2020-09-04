@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 module.exports = function(req, res){
-  fs.readFile('./JSON/users.json', 'utf8', (err, jsonString) =>{
+  fs.readFile('./JSON/groups.json', 'utf8', (err, jsonString) =>{
     if(err){
       console.log("file read failed: ", err);
       return;
@@ -11,17 +11,16 @@ module.exports = function(req, res){
       if(!req.body){
         return res.sendStatus(400);
       } else {
-        var users = [];
+        var groups = [];
         for(var i = 0; i < file.length; i++){
-          user = {};
-          user.id = file[i].id;
-          user.name = file[i].name;
-          user.email = file[i].email;
-          user.role = file[i].role;
-          user.password = file[i].password;
-          users.push(user);
+            group = {};
+            group.groupName = file[i].groupName;
+            group.rooms = file[i].rooms;
+            group.users = file[i].users;
+            group.mod = file[i].mod;
+            groups.push(group);
         }
-        res.send(users);
+        res.send(groups);
       }
     }
     catch(err){

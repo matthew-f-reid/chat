@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
+import { GroupComponent } from './group/group.component';
 
 const routes: Routes = [
   { path: '', component: ChatComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
     AppComponent,
     ChatComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule, 

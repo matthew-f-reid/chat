@@ -6,7 +6,6 @@ module.exports = function(req, res){
       console.log("file read failed: ", err);
       return;
     }
-    console.log("file read: ", jsonString);
     
     try{
       const users = JSON.parse(jsonString);
@@ -17,14 +16,6 @@ module.exports = function(req, res){
         var user = {};
         user.name = req.body.name;
         user.password = req.body.password;
-        console.log("req.body.name");
-        console.log(req.body.name);
-        console.log("users[0].name");
-        console.log(users[0].name);
-        console.log("req.body.password");
-        console.log(req.body.password);
-        console.log("users[0].password");
-        console.log(users[0].password);
 
         for(let i = 0; i < users.length; i++){
           if(req.body.name == users[i].name && req.body.password == users[i].password){

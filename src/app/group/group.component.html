@@ -1,0 +1,13 @@
+<div class="container">
+    <div *ngFor="let group of groups">
+        <h1>{{group.groupName}}</h1>
+        <h2>Rooms</h2>
+        <ul>
+            <li *ngFor="let room of group.rooms">{{room}}</li>
+        </ul>
+        <h2>Users</h2>
+        <ul>
+            <li *ngFor="let user of group.users">Name: {{user.name}}  Role: {{user.role}}</li>
+        </ul>
+    </div>
+</div>

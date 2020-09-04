@@ -1,0 +1,18 @@
+<div *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" class="container">
+    <form >
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" [(ngModel)]="name" name="name" id="name" class="form-control"/>
+            <label for="email">Email</label>
+            <input type="text" [(ngModel)]="email" name="email" id="email" class="form-control"/>
+            <label for="password">Password</label>
+            <input type="text" [(ngModel)]="password" name="password" id="password" class="form-control"/>
+            <select [(ngModel)]="rolelist" name="rolelist">
+                <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
+                <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Admin">Group Admin</option>
+                <option value="Group Assist">Group Assist</option>
+            </select><br/><br/>
+            <button (click)="addUser()" class="btn btn-primary">Add User</button>
+        </div>
+    </form>
+<div>
