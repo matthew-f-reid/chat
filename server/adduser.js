@@ -40,7 +40,7 @@ module.exports = function(req, res){
                 if(!exist){
                     console.log("doesnt exist");
                     users.push(user);
-                    fs.writeFile('./JSON/users.json', JSON.stringify(users), function(err){
+                    fs.writeFile('./JSON/users.json', JSON.stringify(users, null, "\t"), function(err){
                         if(err) throw err;
                         console.log(err);
                     });

@@ -1,1 +1,62 @@
-[{"id":"0","name":"matt","email":"matt@home.com","role":"Super Admin","password":"asd"},{"id":"1","name":"tony","email":"tony@home.com","role":"Group Admin","password":"asd"},{"id":"2","name":"mary","email":"mary@home.com","role":"Group Admin","password":"asd"},{"id":"3","name":"harry","email":"harry@home.com","role":"Group Assist","password":"asd"},{"id":"5","name":"barry","email":"barry","role":"Group Assist","password":"asd"},{"id":6,"name":"andy","email":"andy@home.com","role":"Group Assist","password":"asd"}]
+[
+	{
+		"id": 0,
+		"name": "matt",
+		"email": "matt@home.com",
+		"role": "Super Admin",
+		"password": "asd",
+		"groups": [
+			{
+				"group":"House",
+				"rooms": ["doors","walls","paint"]
+			},
+			{
+				"group":"Automotive",
+				"rooms": ["engine","panels","paint"]
+			},
+			{
+				"group":"Gardening",
+				"rooms": ["fruit","grass","tree"]
+			}
+		]
+	},
+	{
+		"id": 1,
+		"name": "tony",
+		"email": "tony@home.com",
+		"role": "Group Admin",
+		"password": "asd",
+		"groups": [
+			{
+				"group":"Automotive",
+				"rooms": ["engine","panels","paint"]
+			}
+		]
+	},
+	{
+		"id": 2,
+		"name": "mary",
+		"email": "mary@home.com",
+		"role": "Group Admin",
+		"password": "asd",
+		"groups": [
+			{
+				"group":"House",
+				"rooms": ["doors","walls","paint"]
+			}
+		]
+	},
+	{
+		"id": 3,
+		"name": "bob",
+		"email": "bob@home",
+		"role": "Group Assist",
+		"password": "asd",
+		"groups": [
+			{
+				"group":"Gardening",
+				"rooms": ["fruit","grass","tree"]
+			}
+		]
+	}
+]

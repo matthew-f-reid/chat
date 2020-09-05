@@ -1,15 +1,58 @@
 [
   {
-    "groupName": "Automotive",
-    "rooms": ["engine","panels","paint"],
-    "users": [{"name":"matt","role":"Super Admin"},{"name":"tony","role":"Group Admin"}],
-    "mod": {"name":"matt","role":"Super Admin"}
+    "group": "House",
+    "rooms": [
+      {
+        "name": "doors",
+        "roomUsers": [{"name":"mary"},{"name":"matt"}]
+      },
+      {
+        "name": "walls",
+        "roomUsers": [{"name":"mary"},{"name":"matt"}]
+      },
+      {
+        "name": "paint",
+        "roomUsers": [{"name":"mary"},{"name":"matt"}]
+      }
+    ],
+    "groupUsers": [{"name":"matt", "role":"Super Admin"},{"name":"mary", "role":"Group Admin"}]
   },
   {
-    "groupName": "House",
-    "rooms": ["doors","walls","paint"],
-    "users": [{"name":"matt","role":"Super Admin"},{"name":"mary","role":"Group Admin"}],
-    "mod": {"name":"matt","role":"Super Admin"}
+    "group": "Automotive",
+    "rooms": [
+      {
+        "name": "engine",
+        "roomUsers": [{"name":"matt"},{"name":"tony"}]
+      },
+      {
+        "name": "panels",
+        "roomUsers": [{"name":"matt"},{"name":"tony"}]
+      },
+      {
+        "name": "paint",
+        "roomUsers": [{"name":"matt"},{"name":"tony"}]
+      }
+    ],
+    "groupUsers": [{"name":"matt", "role":"Super Admin"},{"name":"tony", "role":"Group Admin"}]
+  },
+  {
+    "group": "Gardening",
+    "rooms": [
+      {
+        "name": "fruit",
+        "roomUsers": [{"name":"matt"},{"name":"bob"}]
+      },
+      {
+        "name": "grass",
+        "roomUsers": [{"name":"matt"},{"name":"bob"}]
+      },
+      {
+        "name": "tree",
+        "roomUsers": [{"name":"matt"},{"name":"bob"}]
+      }
+    ],
+    "groupUsers": [{"name":"matt", "role":"Super Admin"},{"name":"bob", "role":"Group Assist"}]
   }
 ]
+
 

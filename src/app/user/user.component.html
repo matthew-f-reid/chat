@@ -18,8 +18,9 @@
             <input type="submit" (click)="addUser()" class="fadeIn fourth" value="Add User">
             <select [(ngModel)]="rolelist" name="rolelist">
                 <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
-                <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Admin">Group Admin</option>
+                <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
                 <option value="Group Assist">Group Assist</option>
+                <option value="User">User</option>
             </select>
           </form>
         </div>
@@ -60,6 +61,29 @@
                 </td>
                 <td><button (click)="updateUser(id.value, name.value, email.value, password.value, role.value)" class="btn btn-primary">Update</button></td>
                 <td><button (click)="deleteUser(name.value)" class="btn btn-primary">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table *ngIf="currentRole == 'Group Admin' || currentRole == 'Group Assist' || currentRole == 'User'" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <th scope="row">
+                    <label type="text" #name class="form-control">{{user.name}}</label>
+                </th>
+                <td>
+                    <label type="text" #email class="form-control">{{user.email}}</label>
+                </td>
+                <td>
+                    <label type="text" #password class="form-control">{{user.role}}</label>
+                </td>
             </tr>
         </tbody>
     </table>

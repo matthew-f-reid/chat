@@ -33,7 +33,7 @@ module.exports = function(req, res){
                     users.splice(i, 1, user);
                 }
             }
-            fs.writeFile('./JSON/users.json', JSON.stringify(users), function(err){
+            fs.writeFile('./JSON/users.json', JSON.stringify(users, null, "\t"), function(err){
                 if(err) throw err;
                 console.log(err);
             });

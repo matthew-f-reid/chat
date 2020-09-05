@@ -41,6 +41,7 @@ export class UserComponent implements OnInit {
       for(var i = 0; i < data.length; i++){
         this.users.push(data[i]);
       }
+      console.log(this.users);
     });
   }
 

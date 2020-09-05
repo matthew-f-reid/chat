@@ -19,8 +19,10 @@ module.exports = function(req, res){
           user.email = file[i].email;
           user.role = file[i].role;
           user.password = file[i].password;
+          user.groups = file[i].groups;
           users.push(user);
         }
+        console.log(users);
         res.send(users);
       }
     }
