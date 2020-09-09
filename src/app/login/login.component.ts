@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('name', data.name);
         sessionStorage.setItem('role', data.role);
         sessionStorage.setItem('email', data.email);
-        this.router.navigateByUrl('chat');
+        this.router.navigateByUrl('group');
       } else {
         alert("incorrect username or password");
       }

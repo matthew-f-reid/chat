@@ -21,6 +21,12 @@
 					},
 					{
 						"name": "matt"
+					},
+					{
+						"name": "bob"
+					},
+					{
+						"name": "tony"
 					}
 				]
 			},
@@ -54,17 +60,6 @@
 	{
 		"name": "Automotive",
 		"rooms": [
-			{
-				"name": "engine",
-				"roomUsers": [
-					{
-						"name": "matt"
-					},
-					{
-						"name": "tony"
-					}
-				]
-			},
 			{
 				"name": "panels",
 				"roomUsers": [
@@ -136,6 +131,12 @@
 					},
 					{
 						"name": "bob"
+					},
+					{
+						"name": "mary"
+					},
+					{
+						"name": "tony"
 					}
 				]
 			}
@@ -146,6 +147,36 @@
 			},
 			{
 				"name": "mary"
+			},
+			{
+				"name": "tony"
+			}
+		]
+	},
+	{
+		"name": "test",
+		"rooms": [
+			{
+				"name": "sdf",
+				"roomUsers": [
+					{
+						"name": "matt"
+					}
+				]
+			}
+		],
+		"users": [
+			{
+				"name": "tony"
+			},
+			{
+				"name": "matt"
+			},
+			{
+				"name": "mary"
+			},
+			{
+				"name": "bob"
 			}
 		]
 	}

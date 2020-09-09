@@ -20,7 +20,48 @@ html {
   margin: 5px 0px;
 }
 
+.users {
+  padding: 10px;
+  margin: 5px 0px;
+  display: flow-root;
+}
+.users form{
+  padding: 5px 0px;
+}
+
+.groupUsers {
+  display: flex;
+  text-align: center;
+  border-bottom: black 3px solid;
+}
+.user {
+  padding: 5px;
+  margin: 2px;
+}
+.title {
+  border-bottom: black 3px solid;
+}
+.new {
+  text-align: center;
+}
+.newTitle {
+
+}
+.roomUsers {
+
+}
+.roomUser {
   
+}
+.new button {
+  display: block;
+  width: 100%;
+  padding: 30px;
+}
+.new input {
+  display: block;
+  width: 100%;
+}
   body {
     font-family: "Poppins", sans-serif;
     height: 100vh;
@@ -38,9 +79,9 @@ html {
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
-    display:inline-block;
-    margin: 40px 8px 10px 8px; 
-    color: #cccccc;
+    display: inline-block;
+    margin: 15px 20px;
+    color: black;
   }
   
   

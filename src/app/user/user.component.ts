@@ -16,7 +16,6 @@ export class UserComponent implements OnInit {
   rolelist = "";
   name = "";
   email = "";
-  roles = ['Super Admin', 'Group Admin', 'Group Assist', 'User'];
   users = [];
   user = "";
   password = "";

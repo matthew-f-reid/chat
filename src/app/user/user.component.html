@@ -1,14 +1,11 @@
 
     <div *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" class="wrapper fadeInDown">
         <div id="formContent">
-          <!-- Tabs Titles -->
-      
-          <!-- Icon -->
+            
           <div class="fadeIn first">
             <h1>New User</h1>
           </div>
-      
-          <!-- Login Form -->
+          
           <form>
             <input type="text" [(ngModel)]="name" id="name" class="fadeIn second" name="name" placeholder="name">
             <input type="text" [(ngModel)]="email" id="email" class="fadeIn second" name="email" placeholder="email">
@@ -17,16 +14,12 @@
             <select [(ngModel)]="rolelist" name="rolelist">
                 <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
                 <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
-                <option value="Group Assist">Group Assist</option>
-                <option value="User">User</option>
+                <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group Assist</option>
+                <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin' || currentRole == 'Group Assist'" value="User">User</option>
             </select>
           </form>
         </div>
     </div>
-
-
-
-
 
     <table *ngIf="currentRole == 'Super Admin'" class="table">
         <thead>
@@ -53,8 +46,10 @@
                 </td>
                 <td>
                     <select #role>
-                    <option>{{user.role}}</option>
-                    <option *ngFor="let role of roles">{{role}}</option>
+                        <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
+                        <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
+                        <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group Assist</option>
+                        <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin' || currentRole == 'Group Assist'" value="User">User</option>
                     </select>
                 </td>
                 <td><button (click)="updateUser(id.value, name.value, email.value, password.value, role.value)" class="btn btn-primary">Update</button></td>

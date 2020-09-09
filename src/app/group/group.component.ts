@@ -15,22 +15,31 @@ export class GroupComponent implements OnInit {
 
   groups = [];
   totalUsers = [];
+  currentUserRole;
 
   constructor(private route: ActivatedRoute, private httpclient: HttpClient) { }
 
   ngOnInit(): void {
     this.getGroups();
     this.getUsers();
+    this.getCurrentUser();
+  }
+  getCurrentUser(){
+    if(sessionStorage.getItem('role')){
+      this.currentUserRole = sessionStorage.getItem('role');
+    }
   }
   getGroups(){
     if(sessionStorage.getItem('name')){
       let name = {name: sessionStorage.getItem('name')};
       this.httpclient.post(BACKEND_URL + '/getgroup', name, httpOptions)
       .subscribe((data: any) => {
+
         this.groups = [];
         for(var i = 0; i < data.length; i++){
           this.groups.push(data[i]);
         }
+
         console.log(this.groups);
       });
     }
@@ -39,18 +48,20 @@ export class GroupComponent implements OnInit {
     let allUsers = {allUsers:true};
     this.httpclient.post(BACKEND_URL + '/getuser', allUsers, httpOptions)
     .subscribe((data: any) => {
+
       this.totalUsers = [];
       for(var i = 0; i < data.length; i++){
         this.totalUsers.push(data[i]);
       }
+
       console.log(this.totalUsers);
     });
   }
-  addUser(user, group){
+  addUser2G(user, group){
     console.log(user);
     console.log(group);
     
-    let addUser = {type: 'adduser', user: user, group: group};
+    let addUser = {type: 'adduser2G', user: user, group: group};
     this.httpclient.post(BACKEND_URL + '/addgroup', addUser, httpOptions)
     .subscribe((data: any) => {
       
@@ -62,6 +73,106 @@ export class GroupComponent implements OnInit {
       console.log(data);
     });
     
+    
+  }
+  addUser2R(user, room, group){
+    console.log(user);
+    console.log(room);
+    
+    let addUser = {type: 'adduser2R', user: user, room: room, group: group};
+    this.httpclient.post(BACKEND_URL + '/addgroup', addUser, httpOptions)
+    .subscribe((data: any) => {
+      
+      this.groups = [];
+      for(var i = 0; i < data.length; i++){
+        this.groups.push(data[i]);
+      }
+      
+      console.log(data);
+    });
+    
+  }
+  addGroup(groupName){
+    let userName = sessionStorage.getItem('name');
+    let addGroup = {type: 'addgroup', group: groupName, user: userName};
+    this.httpclient.post(BACKEND_URL + '/addgroup', addGroup, httpOptions)
+    .subscribe((data: any) => {
+      
+      this.groups = [];
+      for(var i = 0; i < data.length; i++){
+        this.groups.push(data[i]);
+      }
+      
+      console.log(data);
+    });
+  }
+  
+  addRoom(roomName, groupName){
+    let userName = sessionStorage.getItem('name');
+    let addRoom = {type: 'addroom', group: groupName, room: roomName, user: userName};
+    this.httpclient.post(BACKEND_URL + '/addgroup', addRoom, httpOptions)
+    .subscribe((data: any) => {
+      
+      this.groups = [];
+      for(var i = 0; i < data.length; i++){
+        this.groups.push(data[i]);
+      }
+      
+      console.log(data);
+    });
+  }  
+  delRoom(roomName, groupName){
+    let addRoom = {type: 'delroom', group: groupName, room: roomName};
+    this.httpclient.post(BACKEND_URL + '/addgroup', addRoom, httpOptions)
+    .subscribe((data: any) => {
+      
+      this.groups = [];
+      for(var i = 0; i < data.length; i++){
+        this.groups.push(data[i]);
+      }
+      
+      console.log(data);
+    });
+  }
+
+  delGroup(groupName){
+    let addRoom = {type: 'delgroup', group: groupName};
+    this.httpclient.post(BACKEND_URL + '/addgroup', addRoom, httpOptions)
+    .subscribe((data: any) => {
+      
+      this.groups = [];
+      for(var i = 0; i < data.length; i++){
+        this.groups.push(data[i]);
+      }
+      
+      console.log(data);
+    });
+  }
+  delUser2R(user, room, group){
+    let delUser = {type: 'deluser2R', group: group, user: user, room: room};
+    this.httpclient.post(BACKEND_URL + '/addgroup', delUser, httpOptions)
+    .subscribe((data: any) => {
+      
+      this.groups = [];
+      for(var i = 0; i < data.length; i++){
+        this.groups.push(data[i]);
+      }
+      
+      console.log(data);
+    });
+  }
+  delUser2G(user, group){
+    let delUser = {type: 'deluser2G', group: group, user: user};
+    this.httpclient.post(BACKEND_URL + '/addgroup', delUser, httpOptions)
+    .subscribe((data: any) => {
+      
+      this.groups = [];
+      for(var i = 0; i < data.length; i++){
+        this.groups.push(data[i]);
+      }
+      
+      console.log(data);
+    });
   }
 
 }
