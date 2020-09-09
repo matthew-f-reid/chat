@@ -1,82 +1,77 @@
-
-    <div *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" class="wrapper fadeInDown">
-        <div id="formContent">
-            
-          <div class="fadeIn first">
-            <h1>New User</h1>
-          </div>
-          
-          <form>
-            <input type="text" [(ngModel)]="name" id="name" class="fadeIn second" name="name" placeholder="name">
-            <input type="text" [(ngModel)]="email" id="email" class="fadeIn second" name="email" placeholder="email">
-            <input type="text" [(ngModel)]="password" id="password" class="fadeIn third" name="password" placeholder="password">
-            <input type="submit" (click)="addUser()" class="fadeIn fourth" value="Add User">
-            <select [(ngModel)]="rolelist" name="rolelist">
-                <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
-                <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
-                <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group Assist</option>
-                <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin' || currentRole == 'Group Assist'" value="User">User</option>
-            </select>
-          </form>
+<div *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="fadeIn first">
+        <h1>New User</h1>
         </div>
+        <form>
+        <input type="text" [(ngModel)]="name" id="name" class="fadeIn second" name="name" placeholder="name">
+        <input type="text" [(ngModel)]="email" id="email" class="fadeIn second" name="email" placeholder="email">
+        <input type="text" [(ngModel)]="password" id="password" class="fadeIn third" name="password" placeholder="password">
+        <input type="submit" (click)="addUser()" class="fadeIn fourth" value="Add User">
+        <select [(ngModel)]="rolelist" name="rolelist">
+            <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
+            <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
+            <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group Assist</option>
+            <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin' || currentRole == 'Group Assist'" value="User">User</option>
+        </select>
+        </form>
     </div>
-
-    <table *ngIf="currentRole == 'Super Admin'" class="table">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Password</th>
-                <th scope="col">Role</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                    <input type="hidden" #id class="form-control" value="{{user.id}}"/>
-                <th scope="row">
-                    <input type="text" #name class="form-control" value="{{user.name}}"/>
-                </th>
-                <td>
-                    <input type="text" #email class="form-control" value="{{user.email}}"/>
-                </td>
-                <td>
-                    <input type="text" #password class="form-control" value="{{user.password}}"/>
-                </td>
-                <td>
-                    <select #role>
-                        <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
-                        <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
-                        <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group Assist</option>
-                        <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin' || currentRole == 'Group Assist'" value="User">User</option>
-                    </select>
-                </td>
-                <td><button (click)="updateUser(id.value, name.value, email.value, password.value, role.value)" class="btn btn-primary">Update</button></td>
-                <td><button (click)="deleteUser(name.value)" class="btn btn-primary">Delete</button></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <table *ngIf="currentRole == 'Group Admin' || currentRole == 'Group Assist' || currentRole == 'User'" class="table">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                <th scope="row">
-                    <label type="text" #name class="form-control">{{user.name}}</label>
-                </th>
-                <td>
-                    <label type="text" #email class="form-control">{{user.email}}</label>
-                </td>
-                <td>
-                    <label type="text" #password class="form-control">{{user.role}}</label>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+</div>
+<table *ngIf="currentRole == 'Super Admin'" class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Role</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+                <input type="hidden" #id class="form-control" value="{{user.id}}"/>
+            <th scope="row">
+                <input type="text" #name class="form-control" value="{{user.name}}"/>
+            </th>
+            <td>
+                <input type="text" #email class="form-control" value="{{user.email}}"/>
+            </td>
+            <td>
+                <input type="text" #password class="form-control" value="{{user.password}}"/>
+            </td>
+            <td>
+                <select #role>
+                    <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
+                    <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
+                    <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group Assist</option>
+                    <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin' || currentRole == 'Group Assist'" value="User">User</option>
+                </select>
+            </td>
+            <td><button (click)="updateUser(id.value, name.value, email.value, password.value, role.value)" class="btn btn-primary">Update</button></td>
+            <td><button (click)="deleteUser(name.value)" class="btn btn-primary">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
+<table *ngIf="currentRole == 'Group Admin' || currentRole == 'Group Assist' || currentRole == 'User'" class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <th scope="row">
+                <label type="text" #name class="form-control">{{user.name}}</label>
+            </th>
+            <td>
+                <label type="text" #email class="form-control">{{user.email}}</label>
+            </td>
+            <td>
+                <label type="text" #password class="form-control">{{user.role}}</label>
+            </td>
+        </tr>
+    </tbody>
+</table>

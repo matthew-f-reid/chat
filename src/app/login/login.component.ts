@@ -18,10 +18,8 @@ export class LoginComponent implements OnInit {
   password = "";
   valid;
 
-
   constructor(private route: ActivatedRoute, private router: Router, private httpclient: HttpClient){}
-
-
+  
   ngOnInit(): void {
       this.name = this.route.snapshot.params.name;
       this.password = this.route.snapshot.params.password;

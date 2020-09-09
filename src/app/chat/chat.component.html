@@ -2,48 +2,34 @@
 
     <div class="wrapper fadeInDown">
         <div id="formContent">
-            <div *ngIf="isinRoom" class="fadeIn first">
+            <div *ngIf="inRoom" class="fadeIn first">
                 <h1>{{currentroom}}</h1>
                 <h2>{{numusers}} Active Users</h2>
                 <h3>Notices</h3>
                 {{roomnotice}}<br/>
-                <button (click)="clearnotice()" class="btn btn-primary">Clear notice</button><br/>
+                <button (click)="clearNotice()" class="btn btn-primary">Clear notice</button><br/>
                 <ul class="fadeIn second">
                     <li *ngFor="let message of messages">{{message}}</li>
                 </ul>
             </div>
-      
-            <!-- Login Form -->
             <form>
-            
-            
-            <input *ngIf="isinRoom" type="text" [(ngModel)]="messagecontent" id="messagecontent" class="fadeIn third" name="messagecontent" placeholder="Enter Message">
-            <input *ngIf="isinRoom" type="submit" (click)="chat()" class="fadeIn fourth" value="Chat">
-            
+            <input *ngIf="inRoom" type="text" [(ngModel)]="messageContent" id="messageContent" class="fadeIn third" name="messageContent" placeholder="Enter Message">
+            <input *ngIf="inRoom" type="submit" (click)="chat()" class="fadeIn fourth" value="Chat">
             <div class="form-group">
-                <select [(ngModel)]="roomslist" name="roomslist">
+                <select [(ngModel)]="roomsList" name="roomslist">
                     <option [ngValue]="null">Select Room</option>
                     <option *ngFor="let room of rooms">{{room}}</option>
                 </select><br/><br/>
-                <button *ngIf="!isinRoom" (click)="joinroom()" class="btn btn-primary">Join</button>&nbsp;
-                <button *ngIf="isinRoom" (click)="leaveroom()" class="btn btn-primary">Leave</button>&nbsp;
+                <button *ngIf="!inRoom" (click)="joinRoom()" class="btn btn-primary">Join</button>&nbsp;
+                <button *ngIf="inRoom" (click)="leaveRoom()" class="btn btn-primary">Leave</button>&nbsp;
             </div>
             </form>
         </div>
     </div>
-
-
-
+    
     <form>
-        <label for="newroom">New Room</label>
-        <input type="text" [(ngModel)]="newroom" name="newroom" id="newroom" class="form-control"/>
-        <button (click)="createroom()" class="btn btn-primary">Create New room</button>
+        <label for="newRoom">New Room</label>
+        <input type="text" [(ngModel)]="newRoom" name="newRoom" id="newRoom" class="form-control"/>
+        <button (click)="createRoom()" class="btn btn-primary">Create New room</button>
     </form>
-
-
-
-
-
-
-
 </div>

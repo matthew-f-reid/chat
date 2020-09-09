@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+//add user
+
 module.exports = function(req, res){
     id = 0;
     users = [];

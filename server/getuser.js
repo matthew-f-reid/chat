@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+//get users from file
+
 module.exports = function(req, res){
   fs.readFile('./JSON/users.json', 'utf8', (err, jsonString) =>{
     if(err){

@@ -152,32 +152,5 @@
 				"name": "tony"
 			}
 		]
-	},
-	{
-		"name": "test",
-		"rooms": [
-			{
-				"name": "sdf",
-				"roomUsers": [
-					{
-						"name": "matt"
-					}
-				]
-			}
-		],
-		"users": [
-			{
-				"name": "tony"
-			},
-			{
-				"name": "matt"
-			},
-			{
-				"name": "mary"
-			},
-			{
-				"name": "bob"
-			}
-		]
 	}
 ]

@@ -11,15 +11,15 @@ const SERVER = 'http://192.168.0.3:3000';
 })
 export class ChatComponent implements OnInit {
   private socket;
-  messagecontent = "";
+  messageContent = "";
   messages = [];
   rooms = ['room1','room2'];
-  roomslist = "";
-  roomnotice = "";
-  currentroom = "";
-  isinRoom = false;
-  newroom = "";
-  numusers = 0;
+  roomsList = "";
+  roomNotice = "";
+  currentRoom = "";
+  inRoom = false;
+  newRoom = "";
+  numUsers = 0;
   userRole = "";
 
   constructor(private socketservice:SocketService, private route: ActivatedRoute) {
@@ -28,38 +28,38 @@ export class ChatComponent implements OnInit {
     }
    }
 
-  joinroom(){
-    this.socketservice.joinroom(this.roomslist);
-    this.socketservice.reqnumusers(this.roomslist);
-    this.socketservice.getnumusers((res)=>{this.numusers = res});
+  joinRoom(){
+    this.socketservice.joinRoom(this.roomsList);
+    this.socketservice.reqNumUsers(this.roomsList);
+    this.socketservice.reqNumUsers((res)=>{this.numUsers = res});
   }
 
-  clearnotice(){
-    this.roomnotice = "";
+  clearNotice(){
+    this.roomNotice = "";
   }
 
-  leaveroom(){
-    this.socketservice.leaveroom(this.currentroom);
-    this.socketservice.reqnumusers(this.currentroom);
-    this.socketservice.getnumusers((res)=>{this.numusers = res});
-    this.roomslist = null;
-    this.currentroom = "";
-    this.isinRoom = false;
-    this.numusers = 0;
-    this.roomnotice = ""
+  leaveRoom(){
+    this.socketservice.leaveRoom(this.currentRoom);
+    this.socketservice.reqNumUsers(this.currentRoom);
+    this.socketservice.reqNumUsers((res)=>{this.numUsers = res});
+    this.roomsList = null;
+    this.currentRoom = "";
+    this.inRoom = false;
+    this.numUsers = 0;
+    this.roomNotice = ""
     this.messages = [];
   }
 
-  createroom(){
-    this.socketservice.createroom(this.newroom);
-    this.socketservice.reqroomList();
-    this.newroom = "";
+  createRoom(){
+    this.socketservice.createRoom(this.newRoom);
+    this.socketservice.reqRoomList();
+    this.newRoom = "";
   }
 
   chat(){
-    if(this.messagecontent){
-      this.socketservice.sendMessage(this.messagecontent);
-      this.messagecontent = null;
+    if(this.messageContent){
+      this.socketservice.sendMessage(this.messageContent);
+      this.messageContent = null;
     } else {
       console.log("no message");
     }
@@ -68,14 +68,14 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.socketservice.initSocket();
     this.socketservice.getMessage((m)=>{this.messages.push(m)});
-    this.socketservice.reqroomList();
-    this.socketservice.getroomList((msg)=>{this.rooms = JSON.parse(msg)});
-    this.socketservice.notice((msg)=>{this.roomnotice = msg});
-    this.socketservice.joined((msg)=>{this.currentroom = msg
-      if(this.currentroom != ""){
-        this.isinRoom = true;
+    this.socketservice.reqRoomList();
+    this.socketservice.getRoomList((msg)=>{this.rooms = JSON.parse(msg)});
+    this.socketservice.notice((msg)=>{this.roomNotice = msg});
+    this.socketservice.joined((msg)=>{this.currentRoom = msg
+      if(this.currentRoom != ""){
+        this.inRoom = true;
       } else {
-        this.isinRoom = false;
+        this.inRoom = false;
       }
     });
   }

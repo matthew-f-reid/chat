@@ -1,5 +1,7 @@
 module.exports = {
 
+    //sockets for chat
+
     connect: function(io, PORT){
         var rooms=["room1", "room2", "room3"];
         var socketRoom = [];
@@ -39,9 +41,6 @@ module.exports = {
             });
 
             socket.on("joinRoom", (room) => {
-                
-                console.log("room");
-                console.log(room);
                 if(rooms.includes(room)){
                     socket.join(room, () => {
                         var inroomSocketarray = false;

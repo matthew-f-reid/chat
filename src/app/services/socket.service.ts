@@ -15,13 +15,13 @@ export class SocketService {
     this.socket = io(SERVER_URL);
   }
 
-  joinroom(sel){
+  joinRoom(sel){
     console.log("sel");
       console.log(sel);
     this.socket.emit("joinRoom", sel);
   }
 
-  leaveroom(sel){
+  leaveRoom(sel){
     this.socket.emit("leaveRoom", sel);
   }
 
@@ -29,24 +29,24 @@ export class SocketService {
     this.socket.on('joined', res=>next(res));
   }
 
-  createroom(newroom){
-    this.socket.emit('newroom', newroom);
+  createRoom(newRoom){
+    this.socket.emit('newRoom', newRoom);
   }
 
-  reqnumusers(sel){
-    this.socket.emit('numusers', sel);
+  reqNumUsers(sel){
+    this.socket.emit('numUsers', sel);
   }
 
-  getnumusers(next){
-    this.socket.on('numusers', res=>next(res));
+  getNumUsers(next){
+    this.socket.on('numUsers', res=>next(res));
   }
 
-  reqroomList(){
-    this.socket.emit('roomlist', 'list please');
+  reqRoomList(){
+    this.socket.emit('roomList', 'list please');
   }
 
-  getroomList(next){
-    this.socket.on('roomlist', res=>next(res));
+  getRoomList(next){
+    this.socket.on('roomList', res=>next(res));
   }
 
   notice(next){

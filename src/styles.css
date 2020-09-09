@@ -40,18 +40,17 @@ html {
 }
 .title {
   border-bottom: black 3px solid;
+  margin: 5px 20px -3px 0px;
 }
 .new {
   text-align: center;
 }
-.newTitle {
-
-}
 .roomUsers {
-
+  text-align: center;
 }
 .roomUser {
-  
+  display: flex;
+  border-bottom: black 3px solid;
 }
 .new button {
   display: block;

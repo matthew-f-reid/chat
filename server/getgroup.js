@@ -1,5 +1,7 @@
 const fs = require('fs');
 
+//get groups from file
+
 module.exports = function(req, res){
   fs.readFile('./JSON/groups.json', 'utf8', (err, jsonString) =>{
     if(err){

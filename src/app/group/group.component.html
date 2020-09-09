@@ -1,5 +1,4 @@
 <div class="container">
-
     <form class="new" *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'">
         <div class="newTitle">
             <h3>New group name</h3>
@@ -8,12 +7,10 @@
         <br>
         <button (click)="addGroup(groupName.value)" class="btn btn-primary">Add</button>
     </form>
-
     <div class="group" *ngFor="let group of groups">
         <h1>{{group.name}} <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"
             (click)="delGroup(group.name)" class="btn btn-primary">Delete Group</button>
         </h1>
-        
         <div class="users">
             <div class="title">
                 <h2>Users</h2>
@@ -32,9 +29,7 @@
                 (click)="addUser2G(uNameG.value, group.name)" class="btn btn-primary">Add</button>
             </form>
         </div>
-
         <div class="users">
-
             <form class="new" *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin' || currentUserRole == 'Group Assist'">
                 <div class="newTitle">
                     <h3>New room name</h3>
