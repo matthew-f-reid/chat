@@ -1,14 +1,24 @@
 <div class="container">
-    <div *ngFor="let group of groups">
-        <h1>{{group.groupName}}</h1>
-        <h2>Rooms</h2>
-        <ul>
-            <li *ngFor="let room of group.rooms">{{room}}</li>
-        </ul>
-        <h2>Users</h2>
-        <ul>
-            <li *ngFor="let user of group.users">Name: {{user.name}}  Role: {{user.role}}</li>
-        </ul>
+    <div class="group" *ngFor="let group of groups">
+        <form>
+            <h1>{{group.name}}</h1>
+            <h2>Users</h2>
+                <li *ngFor="let user of group.users">{{user.name}}</li>
+                <select #addUser2G>
+                <option *ngFor="let totalUser of totalUsers">{{totalUser.name}}</option>
+                </select><br>
+                <button (click)="addUser(addUser2G.value, group.name)" class="btn btn-primary">Add</button>
+        </form>
+        <h3>Rooms</h3>
+        <form>
+            <div *ngFor="let room of group.rooms">
+                    <h2>{{room.name}}</h2>
+                    <li *ngFor="let user of room.roomUsers">{{user.name}}</li>
+                    <select #addUser2R>
+                    <option *ngFor="let user of group.users">{{user.name}}</option>
+                    </select><br>
+                    <button (click)="addUser(addUser2R.value, group.name)" class="btn btn-primary">Add</button>
+            </div>
+        </form>
     </div>
 </div>
-

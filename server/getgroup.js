@@ -14,10 +14,9 @@ module.exports = function(req, res){
         var groups = [];
         for(var i = 0; i < file.length; i++){
             group = {};
-            group.groupName = file[i].groupName;
+            group.name = file[i].name;
             group.rooms = file[i].rooms;
             group.users = file[i].users;
-            group.mod = file[i].mod;
             groups.push(group);
         }
         res.send(groups);

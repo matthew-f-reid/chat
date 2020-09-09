@@ -13,6 +13,13 @@ html {
 .navbar-nav li {
     padding: 0 20px;
 }
+
+.group {
+  padding: 10px;
+  border: black 3px solid;
+  margin: 5px 0px;
+}
+
   
   body {
     font-family: "Poppins", sans-serif;
