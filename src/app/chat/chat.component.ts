@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+//import { ActivatedRoute } from '@angular/router';
 import { SocketService } from '../services/socket.service';
 
 const SERVER = 'http://192.168.0.3:3000';
@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit {
   numUsers = 0;
   userRole = "";
 
-  constructor(private socketservice:SocketService, private route: ActivatedRoute) {
+  constructor(private socketservice:SocketService) {
     if(sessionStorage.getItem('role')){
       this.userRole = sessionStorage.getItem('role');
     }
