@@ -30,15 +30,15 @@
     </thead>
     <tbody>
         <tr *ngFor="let user of users">
-                <input type="hidden" #id class="form-control" value="{{user.id}}"/>
+                <input type="hidden" #id class="form-control" value="{{user._id}}"/>
             <th scope="row">
-                <input type="text" #name class="form-control" value="{{user.name}}"/>
+                <input type="text" #name class="form-control" value="{{user.user.name}}"/>
             </th>
             <td>
-                <input type="text" #email class="form-control" value="{{user.email}}"/>
+                <input type="text" #email class="form-control" value="{{user.user.email}}"/>
             </td>
             <td>
-                <input type="text" #password class="form-control" value="{{user.password}}"/>
+                <input type="text" #password class="form-control" value="{{user.user.password}}"/>
             </td>
             <td>
                 <select #role>

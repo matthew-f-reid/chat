@@ -1,60 +1,36 @@
-const fs = require('fs');
-
 //add user
 
-module.exports = function(req, res){
-    id = 0;
-    users = [];
-    exist = false;
-    fs.readFile('./JSON/users.json', 'utf8', (err, jsonString) =>{
-        if(err){
-            console.log("file read failed: ", err);
-            return;
-        }
-        try{
-            const file = JSON.parse(jsonString);
-            for(let i = 0; i < file.length; i++){
-                user = {};
-                user.id = file[i].id;
-                user.name = file[i].name;
-                user.email = file[i].email;
-                user.role = file[i].role;
-                user.password = file[i].password;
-                users.push(user);
-                this.id++;
-            }
-            this.id++;
-            if(!req.body){
-                return res.sendStatus(400);
-            } else {
-                user = {};
-                user.id = this.id;
-                user.name = req.body.name;
-                user.email = req.body.email;
-                user.role = req.body.role;
-                user.password = req.body.password;
-                for(var i = 0; i < users.length; i++){
-                    if(user.name == users[i].name){
-                        exist = true;
-                        i = users.length;
-                    }
-                }
-                if(!exist){
-                    console.log("doesnt exist");
-                    users.push(user);
-                    fs.writeFile('./JSON/users.json', JSON.stringify(users, null, "\t"), function(err){
-                        if(err) throw err;
-                        console.log(err);
-                    });
-                    res.send(users);
-                } else {
-                    console.log("exist");
-                    res.send(users);
-                }
+users = [];
+
+module.exports = async function(db,app){
+    const collection = db.collection('users');
+    users = await collection.find().toArray();
+    app.post('/adduser',async function(req, res){
+        let exist = false;
+        if(!req.body){
+          return res.sendStatus(400);
+        }        
+        user = {};
+        user.name = req.body.name;
+        user.email = req.body.email;
+        user.role = req.body.role;
+        user.password = req.body.password;
+        console.log(users);
+
+        for(var i = 0; i < users.length; i++){
+            if(user.name == users[i].user.name){
+                exist = true;
+                i = users.length;
             }
         }
-        catch(err){
-            console.log("error parsing JSON string: ", err);
+        if(!exist){
+            console.log("doesnt exist");
+            await collection.insertOne({user});
+            res.send(await collection.find().toArray());
+        } else {
+            console.log("exist");
+            res.send(await collection.find().toArray());
         }
     });
 }
+
