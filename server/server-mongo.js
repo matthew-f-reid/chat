@@ -14,21 +14,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(__dirname + '/../dist/chat'));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.post('/login', require('./login.js'));
-app.post('/getgroup', require('./getgroup.js'));
+//app.post('/getgroup', require('./getgroup.js'));
 sockets.connect(io, PORT);
 
-MongoClient.connect(url, {poolSize:10, useNewUrlParser: true, useUnifiedTopology: true}, function(err, client){
-  if (err){
-    return console.log(err);
-  }
-  const dbName = 'mydb';
-  const db = client.db(dbName);
+const ops = require('./dbOps');
+app.post('/adduser', ops.addUser);
+app.post('/getuser', ops.getUser);
+app.post('/deluser', ops.deleteUser);
+app.post('/updateuser', ops.updateUser);
+app.post('/addgroup', ops.addGroup);
+app.post('/getgroup', ops.getGroup);
+app.post('/delgroup', ops.delGroup);
+app.post('/addroom', ops.addRoom);
+app.post('/delroom', ops.delRoom);
 
-  require('./adduser.js')(db,app);
-  require('./getuser.js')(db,app);
-  require('./deluser.js')(db,app);
-  require('./updateuser.js')(db,app);
-
-  server.listen(http, PORT);
-});
+server.listen(http, PORT);
+module.exports = app;

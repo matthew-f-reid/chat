@@ -36,7 +36,7 @@
                 </div>
                 <input type="text" #roomName class="form-control" placeholder="Enter Room Name"/>
                 <br>
-                <button (click)="addRoom(roomName.value, group.name)" class="btn btn-primary">Add</button>
+                <button (click)="addRoom(group, roomName.value, group.name)" class="btn btn-primary">Add</button>
             </form>
             <div class="title">
                 <h3>Rooms</h3>
@@ -47,7 +47,7 @@
                         <div class="title">
                             <h2>{{room.name}}</h2>
                             <br>
-                            <button (click)="delRoom(room.name, group.name)" class="btn btn-primary">Delete Room</button>
+                            <button (click)="delRoom(room.name, group._id)" class="btn btn-primary">Delete Room</button>
                         </div>
                         <div class="user" *ngFor="let user of room.roomUsers">
                             {{user.name}}<br>
