@@ -2,9 +2,12 @@
 
 /* BASIC */
 
-html {
-    background-color: #56baed;
-  }
+.sidenav {
+  display: flex;
+  flex-flow: column;
+  position: absolute;
+  left: 2%;
+}
 .navbar-nav {
     display: flex;
     -webkit-box-orient: horizontal;

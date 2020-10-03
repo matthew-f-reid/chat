@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="sidenav">
+        <a *ngFor="let group of groups" href="#div{{group.name}}.group" target="_self">{{group.name}}</a>
+    </div>
     <form class="new" *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'">
         <div class="newTitle">
             <h3>New group name</h3>
@@ -7,7 +10,7 @@
         <br>
         <button (click)="addGroup(groupName.value)" class="btn btn-primary">Add</button>
     </form>
-    <div class="group" *ngFor="let group of groups">
+    <div id="{{group.name}}" class="group" *ngFor="let group of groups">
         <h1>{{group.name}} <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"
             (click)="delGroup(group.name)" class="btn btn-primary">Delete Group</button>
         </h1>
