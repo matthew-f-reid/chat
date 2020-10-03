@@ -6,7 +6,7 @@
                 <h1>{{currentroom}}</h1>
                 <h2>{{numusers}} Active Users</h2>
                 <h3>Notices</h3>
-                {{roomnotice}}<br/>
+                {{roomNotice}}<br/>
                 <button (click)="clearNotice()" class="btn btn-primary">Clear notice</button><br/>
                 <ul class="fadeIn second">
                     <li *ngFor="let message of messages">{{message}}</li>
@@ -18,7 +18,7 @@
             <div class="form-group">
                 <select [(ngModel)]="roomsList" name="roomslist">
                     <option [ngValue]="null">Select Room</option>
-                    <option *ngFor="let room of rooms">{{room}}</option>
+                    <option *ngFor="let room of rooms">{{room.group}} - {{room.room}}</option>
                 </select><br/><br/>
                 <button *ngIf="!inRoom" (click)="joinRoom()" class="btn btn-primary">Join</button>&nbsp;
                 <button *ngIf="inRoom" (click)="leaveRoom()" class="btn btn-primary">Leave</button>&nbsp;
@@ -26,10 +26,4 @@
             </form>
         </div>
     </div>
-    
-    <form>
-        <label for="newRoom">New Room</label>
-        <input type="text" [(ngModel)]="newRoom" name="newRoom" id="newRoom" class="form-control"/>
-        <button (click)="createRoom()" class="btn btn-primary">Create New room</button>
-    </form>
 </div>

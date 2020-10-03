@@ -40,8 +40,8 @@ module.exports = {
                 chat.in(room).emit('numusers', usercount);
             });
 
-            socket.on("joinRoom", (room) => {
-                if(rooms.includes(room)){
+            socket.on("joinRoom", (room, user) => {
+                console.log(user);
                     socket.join(room, () => {
                         var inroomSocketarray = false;
 
@@ -66,20 +66,19 @@ module.exports = {
                             }
                         }
 
-                        chat.in(room).emit("notice", "a new user has joined");
+                        chat.in(room).emit("notice", user + " has joined the chat");
                     });
 
                     return chat.in(room).emit("joined", room);
-                }
             });
 
-            socket.on("leaveRoom", (room) => {
+            socket.on("leaveRoom", (room, user) => {
 
                 for(i = 0; i < socketRoom.length; i++){
                     if(socketRoom[i][0] == socket.id){
                         socketRoom.splice(i, 1);
                         socket.leave(room);
-                        chat.to(room).emit("notice", "a user has left");
+                        chat.to(room).emit("notice", user + " has left the chat");
                     }
                 }
 

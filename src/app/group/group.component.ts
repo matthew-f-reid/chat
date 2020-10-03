@@ -23,6 +23,12 @@ export class GroupComponent implements OnInit {
     this.getGroups();
     this.getUsers();
     this.getCurrentUser();
+    console.log(this.groups);
+    console.log(this.totalUsers);
+    console.log(this.currentUserRole);
+    
+    
+    
   }
   getCurrentUser(){
     if(sessionStorage.getItem('role')){
@@ -45,15 +51,17 @@ export class GroupComponent implements OnInit {
     let allUsers = {allUsers:true};
     this.httpclient.post(BACKEND_URL + '/getuser', allUsers, httpOptions)
     .subscribe((data: any) => {
+      console.log(data);
+      
       this.totalUsers = [];
       for(var i = 0; i < data.length; i++){
         this.totalUsers.push(data[i]);
       }
     });
   }
-  addUser2G(user, group){///////////////////////////////////////////////////////////
-    let addUser = {type: 'adduser2G', user: user, group: group};
-    this.httpclient.post(BACKEND_URL + '/addgroup', addUser, httpOptions)
+  addUser2G(user, group){
+    let addUser = {user: user, group};
+    this.httpclient.post(BACKEND_URL + '/adduser2g', addUser, httpOptions)
     .subscribe((data: any) => {
       this.groups = [];
       for(var i = 0; i < data.length; i++){
@@ -64,8 +72,8 @@ export class GroupComponent implements OnInit {
     
   }
   addUser2R(user, room, group){///////////////////////////////////////////////////
-    let addUser = {type: 'adduser2R', user: user, room: room, group: group};
-    this.httpclient.post(BACKEND_URL + '/addgroup', addUser, httpOptions)
+    let addUser = {user: user, room: room, group};
+    this.httpclient.post(BACKEND_URL + '/adduser2r', addUser, httpOptions)
     .subscribe((data: any) => {
       this.groups = [];
       for(var i = 0; i < data.length; i++){
@@ -124,8 +132,8 @@ export class GroupComponent implements OnInit {
     });
   }
   delUser2R(user, room, group){//////////////////////////////////////
-    let delUser = {type: 'deluser2R', group: group, user: user, room: room};
-    this.httpclient.post(BACKEND_URL + '/addgroup', delUser, httpOptions)
+    let delUser = {group, user: user, room: room};
+    this.httpclient.post(BACKEND_URL + '/deluser2r', delUser, httpOptions)
     .subscribe((data: any) => {
       this.groups = [];
       for(var i = 0; i < data.length; i++){
@@ -133,9 +141,9 @@ export class GroupComponent implements OnInit {
       }
     });
   }
-  delUser2G(user, group){////////////////////////////////////////////////////
-    let delUser = {type: 'deluser2G', group: group, user: user};
-    this.httpclient.post(BACKEND_URL + '/addgroup', delUser, httpOptions)
+  delUser2G(user, group){
+    let delUser = {group, user: user};
+    this.httpclient.post(BACKEND_URL + '/deluser2g', delUser, httpOptions)
     .subscribe((data: any) => {
       this.groups = [];
       for(var i = 0; i < data.length; i++){

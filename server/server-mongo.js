@@ -20,11 +20,10 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.post('/login', require('./login.js'));
-//app.post('/getgroup', require('./getgroup.js'));
 sockets.connect(io, PORT);
 
 const ops = require('./dbOps');
+app.post('/login', ops.login);
 app.post('/adduser', ops.addUser);
 app.post('/getuser', ops.getUser);
 app.post('/deluser', ops.deleteUser);
@@ -34,6 +33,10 @@ app.post('/getgroup', ops.getGroup);
 app.post('/delgroup', ops.delGroup);
 app.post('/addroom', ops.addRoom);
 app.post('/delroom', ops.delRoom);
+app.post('/adduser2g', ops.addUser2G);
+app.post('/deluser2g', ops.delUser2G);
+app.post('/adduser2r', ops.addUser2R);
+app.post('/deluser2r', ops.delUser2R);
 
 server.listen(http, PORT);
 module.exports = app;

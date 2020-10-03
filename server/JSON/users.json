@@ -6,14 +6,14 @@
 		"password": "asd"
 	},
 	{
-		"name": "john",
-		"email": "john@home.com",
+		"name": "tony",
+		"email": "tony@home.com",
 		"role": "Group Admin",
 		"password": "asd"
 	},
 	{
-		"name": "john",
-		"email": "john@home.com",
+		"name": "bob",
+		"email": "bob@home.com",
 		"role": "Group Admin",
 		"password": "asd"
 	},

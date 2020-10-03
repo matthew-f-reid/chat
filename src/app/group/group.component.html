@@ -19,14 +19,15 @@
                 <div class="user" *ngFor="let user of group.users">
                     {{user.name}}<br>
                     <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"
-                    (click)="delUser2G(user.name, group.name)" class="btn btn-primary">Remove</button>
+                    (click)="delUser2G(user.name, group._id)" class="btn btn-primary">Remove</button>
                 </div>
             </div>
-            <form *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"><select #uNameG>
-                <option *ngFor="let totalUser of totalUsers">{{totalUser.name}}</option>
+            <form *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'">
+                <select #uNameG>
+                    <option *ngFor="let totalUser of totalUsers">{{totalUser.user.name}}</option>
                 </select><br>
                 <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"
-                (click)="addUser2G(uNameG.value, group.name)" class="btn btn-primary">Add</button>
+                (click)="addUser2G(uNameG.value, group._id)" class="btn btn-primary">Add</button>
             </form>
         </div>
         <div class="users">
@@ -52,14 +53,14 @@
                         <div class="user" *ngFor="let user of room.roomUsers">
                             {{user.name}}<br>
                             <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin' || currentUserRole == 'Group Assist'"
-                            (click)="delUser2R(user.name, room.name, group.name)" class="btn btn-primary">Remove</button>
+                            (click)="delUser2R(user.name, room.name, group._id)" class="btn btn-primary">Remove</button>
                         </div>
                         <form>
                             <select #uNameR>
                             <option *ngFor="let user of group.users">{{user.name}}</option>
                             </select><br>
                             <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin' || currentUserRole == 'Group Assist'"
-                            (click)="addUser2R(uNameR.value, room.name, group.name)" class="btn btn-primary">Add</button>
+                            (click)="addUser2R(uNameR.value, room.name, group._id)" class="btn btn-primary">Add</button>
                         </form>
                     </div>
                 </div>

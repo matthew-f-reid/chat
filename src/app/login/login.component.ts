@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit {
     let userpwd = {name: this.name, password: this.password};
     this.httpclient.post(BACKEND_URL + '/login', userpwd, httpOptions)
     .subscribe((data: any) => {
+      console.log(data);
+      
       if (data.valid){
         sessionStorage.setItem('name', data.name);
         sessionStorage.setItem('role', data.role);

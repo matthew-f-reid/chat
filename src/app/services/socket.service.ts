@@ -15,14 +15,12 @@ export class SocketService {
     this.socket = io(SERVER_URL);
   }
 
-  joinRoom(sel){
-    console.log("sel");
-      console.log(sel);
-    this.socket.emit("joinRoom", sel);
+  joinRoom(room, user){
+    this.socket.emit("joinRoom", room, user);
   }
 
-  leaveRoom(sel){
-    this.socket.emit("leaveRoom", sel);
+  leaveRoom(room, user){
+    this.socket.emit("leaveRoom", room, user);
   }
 
   joined(next){

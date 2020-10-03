@@ -36,10 +36,14 @@ export class UserComponent implements OnInit {
     let userpwd = {name: this.name, password: this.email};
     this.httpclient.post(BACKEND_URL + '/getuser', userpwd, httpOptions)
     .subscribe((data: any) => {
+      console.log(data);
+      
       this.users = [];
       for(var i = 0; i < data.length; i++){
         this.users.push(data[i]);
       }
+      console.log(this.users);
+      
     });
   }
 

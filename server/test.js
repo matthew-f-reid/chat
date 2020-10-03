@@ -31,36 +31,32 @@ describe('/getuser', () => {
               done();
           });
   });
-  it('users should should contain john', (done) => {
+  it('users should contain matt', (done) => {
       chai.request(app)
           .post('/getuser').type('form').send({})
           .end((err, res) => {
             let r = res.body;
             for(let i = 0; i < r.length; i++){
-              if(r[i].user.name == 'john'){
-                r[i].user.name.should.contain('john');
+              if(r[i].user.name == 'matt'){
+                r[i].user.name.should.contain('matt');
               }
             }
-              done();
+            done();
           });
   });
 });
 
 describe('/adduser', () => {
-  it('check user exists', (done) => {
+  it('should have property role', (done) => {
       chai.request(app)
           .post('/adduser').type('form').send({'name': 'matt', 'email': 'matt@home.com', 'role': 'Super Admin', 'password':'asd'})
           .end((err, res) => {
             let r = res.body;
-              for(let i = 0; i < r.length; i++){
-                if(r[i].user.name == 'matt'){
-                  r[i].user.name.should.contain('matt');
-                }
-              }
-              done();
+            r[0].user.should.have.own.property('role');
+            done();
           });
   });
-  it('add user to db', (done) => {
+  it('should add user to db', (done) => {
       chai.request(app)
           .post('/adduser').type('form').send({'name': 'alfredo', 'email': 'alfredo@home.com', 'role': 'User', 'password':'asd'})
           .end((err, res) => {
@@ -71,6 +67,36 @@ describe('/adduser', () => {
                 }
               }
               done();
+          });
+  });
+});
+
+describe('/updateuser', () => {
+  it('should update john to johnny', (done) => {
+      chai.request(app)
+          .post('/updateuser').type('form').send({'id': '5f68ae50bee03453dcb757d5', 'name': 'johnny', 'email': 'john@home.com', 'role': 'Group Admin', 'password': 'asd'})
+          .end((err, res) => {
+            let r = res.body;
+            for(let i = 0; i < r.length; i++){
+              if(r[i]._id == '5f68ae50bee03453dcb757d5'){
+                r[i].user.name.should.contain('johnny');
+              }
+            }
+            done();
+          });
+  });
+});
+
+describe('/deleteuser', () => {
+  it('should delete alfredo', (done) => {
+      chai.request(app)
+          .post('/deluser').type('form').send({'name': 'alfredo'})
+          .end((err, res) => {
+            let r = res.body;
+            for(let i = 0; i < r.length; i++){
+              r[i].user.name.should.not.contain('alfredo');
+            }
+            done();
           });
   });
 });

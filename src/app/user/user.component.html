@@ -42,6 +42,7 @@
             </td>
             <td>
                 <select #role>
+                    <option>{{user.user.role}}</option>
                     <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
                     <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
                     <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group Assist</option>
