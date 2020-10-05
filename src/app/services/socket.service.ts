@@ -11,52 +11,52 @@ export class SocketService {
 
   constructor() { }
 
-  initSocket(){
+  initSocket() {
     this.socket = io(SERVER_URL);
   }
 
-  joinRoom(room, user){
+  joinRoom(room, user) {
     this.socket.emit("joinRoom", room, user);
   }
 
-  leaveRoom(room, user){
+  leaveRoom(room, user) {
     this.socket.emit("leaveRoom", room, user);
   }
 
-  joined(next){
-    this.socket.on('joined', res=>next(res));
+  joined(next) {
+    this.socket.on('joined', res => next(res));
   }
 
-  createRoom(newRoom){
+  createRoom(newRoom) {
     this.socket.emit('newRoom', newRoom);
   }
 
-  reqNumUsers(sel){
+  reqNumUsers(sel) {
     this.socket.emit('numUsers', sel);
   }
 
-  getNumUsers(next){
-    this.socket.on('numUsers', res=>next(res));
+  getNumUsers(next) {
+    this.socket.on('numUsers', res => next(res));
   }
 
-  reqRoomList(){
+  reqRoomList() {
     this.socket.emit('roomList', 'list please');
   }
 
-  getRoomList(next){
-    this.socket.on('roomList', res=>next(res));
+  getRoomList(next) {
+    this.socket.on('roomList', res => next(res));
   }
 
-  notice(next){
-    this.socket.on('notice', res=>next(res));
+  notice(next) {
+    this.socket.on('notice', res => next(res));
   }
 
-  sendMessage(message){
+  sendMessage(message) {
     this.socket.emit('message', message);
   }
 
-  getMessage(next){
-    this.socket.on('message', message=>next(message));
+  getMessage(next) {
+    this.socket.on('message', message => next(message));
   }
 
 }

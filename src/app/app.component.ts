@@ -11,9 +11,9 @@ export class AppComponent {
   title = 'chat';
   loggedIn = true;
 
-  constructor(private route: ActivatedRoute, private router: Router) {   }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
-  logout(){
+  logout() {
     sessionStorage.clear();
     this.router.navigateByUrl('/');
   }

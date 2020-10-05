@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json'})
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 const BACKEND_URL = 'http://192.168.0.3:3000';
 
@@ -18,27 +18,25 @@ export class LoginComponent implements OnInit {
   password = "";
   valid;
 
-  constructor(private route: ActivatedRoute, private router: Router, private httpclient: HttpClient){}
-  
+  constructor(private route: ActivatedRoute, private router: Router, private httpclient: HttpClient) { }
+
   ngOnInit(): void {
-      this.name = this.route.snapshot.params.name;
-      this.password = this.route.snapshot.params.password;
+    this.name = this.route.snapshot.params.name;
+    this.password = this.route.snapshot.params.password;
   }
 
-  login(){
-    let userpwd = {name: this.name, password: this.password};
+  login() {
+    let userpwd = { name: this.name, password: this.password };
     this.httpclient.post(BACKEND_URL + '/login', userpwd, httpOptions)
-    .subscribe((data: any) => {
-      console.log(data);
-      
-      if (data.valid){
-        sessionStorage.setItem('name', data.name);
-        sessionStorage.setItem('role', data.role);
-        sessionStorage.setItem('email', data.email);
-        this.router.navigateByUrl('group');
-      } else {
-        alert("incorrect username or password");
-      }
-    });
+      .subscribe((data: any) => {
+        if (data.valid) {
+          sessionStorage.setItem('name', data.name);
+          sessionStorage.setItem('role', data.role);
+          sessionStorage.setItem('email', data.email);
+          this.router.navigateByUrl('group');
+        } else {
+          alert("incorrect username or password");
+        }
+      });
   }
 }
