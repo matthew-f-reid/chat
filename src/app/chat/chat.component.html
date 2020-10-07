@@ -9,7 +9,7 @@
                 {{roomNotice}}<br />
                 <button (click)="clearNotice()" class="btn btn-primary">Clear notice</button><br />
                 <ul class="fadeIn second">
-                    <li *ngFor="let message of messages">{{message}}</li>
+                    <li *ngFor="let message of messages"><h3 class="username">{{message.name}}</h3><p>{{message.msg}}</p></li>
                 </ul>
             </div>
             <form>

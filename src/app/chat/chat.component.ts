@@ -79,8 +79,10 @@ export class ChatComponent implements OnInit {
 
   chat() {
     if (this.messageContent) {
-      this.socketservice.sendMessage(this.messageContent);
+      this.socketservice.sendMessage(this.messageContent, this.userName);
       this.messageContent = null;
+      console.log(this.messages);
+      
     } else {
       console.log("no message");
     }
@@ -88,7 +90,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.socketservice.initSocket();
-    this.socketservice.getMessage((m) => { this.messages.push(m) });
+    this.socketservice.getMessage((m) => { this.messages.push({msg: m, name: this.userName}) });
     this.socketservice.reqRoomList();
     this.socketservice.getRoomList((msg) => { this.rooms = JSON.parse(msg) });
     this.socketservice.notice((msg) => { this.roomNotice = msg });

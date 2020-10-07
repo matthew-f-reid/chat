@@ -1,11 +1,36 @@
 import { browser, by, element } from 'protractor';
 
 export class AppPage {
-  navigateTo(): Promise<unknown> {
-    return browser.get(browser.baseUrl) as Promise<unknown>;
+  navigateTo(){
+    return browser.get(browser.baseUrl);
   }
 
-  getTitleText(): Promise<string> {
-    return element(by.css('app-root .content span')).getText() as Promise<string>;
+  getTitleText() {
+    return element(by.css('app-root')).getText();
+  }
+  
+  clickButton(btn){
+    btn.click();
+  }
+}
+
+export class LoginPage {
+  private user = {
+    name: 'matt',
+    pass: 'asd'
+  };
+
+  navigateTo(){
+    return browser.get(browser.baseUrl);
+  }
+  
+  loginUser(user: any = this.user){
+
+    console.log(element(by.id('name')));
+    
+    //.sendKeys(user.name);
+    //element(by.name('password')).sendKeys(user.pass);
+    //element(by.buttonText('Login')).click();
+    
   }
 }

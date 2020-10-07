@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* BASIC */
-
+li {
+  list-style: none;
+  text-align: left;
+}
+.username {
+  font-weight: bolder;
+}
 .sidenav {
   display: flex;
   flex-flow: column;

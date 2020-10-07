@@ -10,10 +10,16 @@ module.exports = {
         const chat = io.of('/chat');
 
         chat.on('connection', (socket) => {
-            socket.on('message', (message) => {
+            socket.on('message', (message, user) => {
                 for (i = 0; i < socketRoom.length; i++) {
+                    console.log("socketRoom");
+                    console.log(socketRoom[i]);
                     if (socketRoom[i][0] == socket.id) {
-                        chat.to(socketRoom[i][1]).emit('message', message);
+                        console.log("message");
+                        console.log(message);
+                        console.log("user");
+                        console.log(user);
+                        chat.to(socketRoom[i][1]).emit('message', message, user);
                     }
                 }
             });

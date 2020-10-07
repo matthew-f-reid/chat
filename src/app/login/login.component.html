@@ -7,7 +7,8 @@
       <input type="text" [(ngModel)]="name" id="name" class="fadeIn second" name="name" placeholder="name" value="matt">
       <input type="text" [(ngModel)]="password" id="password" class="fadeIn third" name="password"
         placeholder="password" value="asd">
-      <input type="submit" (click)="login()" class="fadeIn fourth" value="Log In">
+      <!--<input id="login-btn" type="submit" (click)="login()" class="fadeIn fourth" value="Log In">-->
+      <button (click)="login()" class="btn btn-primary">Login</button>
     </form>
     <div id="formFooter">
       <h2 class="underlineHover">Chatter</h2>

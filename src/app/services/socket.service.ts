@@ -51,8 +51,8 @@ export class SocketService {
     this.socket.on('notice', res => next(res));
   }
 
-  sendMessage(message) {
-    this.socket.emit('message', message);
+  sendMessage(message, user) {
+    this.socket.emit('message', message, user);
   }
 
   getMessage(next) {
