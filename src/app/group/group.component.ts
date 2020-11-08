@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const BACKEND_URL = 'http://192.168.0.3:3000';
+const BACKEND_URL = 'http://localhost:3000';
 
 @Component({
   selector: 'app-group',

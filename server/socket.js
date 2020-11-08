@@ -12,6 +12,7 @@ module.exports = {
         chat.on('connection', (socket) => {
             socket.on('message', (message, user) => {
                 for (i = 0; i < socketRoom.length; i++) {
+                    console.log("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
                     console.log("socketRoom");
                     console.log(socketRoom[i]);
                     if (socketRoom[i][0] == socket.id) {
@@ -19,6 +20,7 @@ module.exports = {
                         console.log(message);
                         console.log("user");
                         console.log(user);
+                        console.log("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
                         chat.to(socketRoom[i][1]).emit('message', message, user);
                     }
                 }

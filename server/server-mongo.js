@@ -7,7 +7,6 @@ const server = require('./listen.js');
 const MongoClient = require('mongodb').MongoClient;
 const io = require('socket.io')(http);
 const sockets = require('./socket.js');
-const url = 'mongodb://localhost:27017';
 const PORT = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +21,7 @@ app.use((req, res, next) => {
 });
 sockets.connect(io, PORT);
 
-const ops = require('./dbOps');
+const ops = require('./dbOps.js');
 app.post('/login', ops.login);
 app.post('/adduser', ops.addUser);
 app.post('/getuser', ops.getUser);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 
-const SERVER_URL = 'http://192.168.0.3:3000/chat';
+const SERVER_URL = 'http://localhost:3000/chat';
 
 @Injectable({
   providedIn: 'root'

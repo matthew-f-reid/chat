@@ -5,7 +5,7 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
-const SERVER = 'http://192.168.0.3:3000';
+const SERVER = 'http://localhost:3000';
 
 @Component({
   selector: 'app-chat',
