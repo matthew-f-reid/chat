@@ -19,9 +19,17 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-sockets.connect(io, PORT);
+sockets.connect(io);
 
 const ops = require('./dbOps.js');
+ops.setGroupRequestNotifier((request) => {
+  io.of('/chat').to('group-admins').emit('groupJoinRequest', request);
+});
+ops.setJoinRequestDecisionNotifier((decision) => {
+  io.of('/chat').emit('joinRequestDecision', decision);
+});
+app.post('/getnotifications', ops.getNotifications);
+app.post('/dismissnotification', ops.dismissNotification);
 app.post('/login', ops.login);
 app.post('/adduser', ops.addUser);
 app.post('/getuser', ops.getUser);
@@ -36,6 +44,9 @@ app.post('/adduser2g', ops.addUser2G);
 app.post('/deluser2g', ops.delUser2G);
 app.post('/adduser2r', ops.addUser2R);
 app.post('/deluser2r', ops.delUser2R);
+app.post('/requestgroup', ops.requestGroup);
+app.post('/requestroom', ops.requestRoom);
+app.post('/decidejoinrequest', ops.decideJoinRequest);
 
 server.listen(http, PORT);
 module.exports = app;

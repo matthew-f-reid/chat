@@ -1,0 +1,104 @@
+.user-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 16px;
+}
+
+.user-actions .btn {
+    padding: 9px 18px;
+}
+
+.user-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.62);
+}
+
+.user-modal {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding: clamp(20px, 5vw, 32px);
+    border-top: 5px solid var(--color-red);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+}
+
+.user-modal h1 {
+    margin: 0 2rem 1.25rem 0;
+}
+
+.user-modal input,
+.user-modal select {
+    display: block;
+    width: 100%;
+    margin: 0.75rem auto;
+}
+
+.user-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    min-height: 40px;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink);
+    font-size: 1.75rem;
+    cursor: pointer;
+}
+
+.user-modal-close:hover {
+    background: var(--color-red-soft);
+    color: var(--color-red-dark);
+}
+
+.user-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.user-modal-actions button {
+    min-width: 100px;
+    padding: 8px 16px;
+}
+
+.table input,
+.table select {
+    min-width: 100px;
+    width: 100%;
+    margin: 0;
+}
+
+.table .btn {
+    padding: 7px 12px;
+}
+
+@media (max-width: 600px) {
+    .user-actions {
+        justify-content: stretch;
+    }
+
+    .user-actions .btn {
+        width: 100%;
+    }
+
+    .user-modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .user-modal-actions button {
+        width: 100%;
+    }
+}

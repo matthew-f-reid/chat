@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BACKEND_URL } from '../services/backend-url';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const BACKEND_URL = 'http://localhost:3000';
-
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -21,16 +21,21 @@ export class UserComponent implements OnInit {
   password = "";
   currentRole = "";
   id = "";
+  isAddUserModalOpen = false;
 
-  constructor(private route: ActivatedRoute, private httpclient: HttpClient) { }
+  constructor(private route: ActivatedRoute, private router: Router, private httpclient: HttpClient) { }
 
   ngOnInit(): void {
+    this.currentRole = sessionStorage.getItem('role');
+    if (this.currentRole === 'User') {
+      this.router.navigateByUrl('/group');
+      return;
+    }
     this.getUsers();
     this.name = this.route.snapshot.params.name;
     this.email = this.route.snapshot.params.email;
     this.rolelist = this.route.snapshot.params.rolelist;
     this.password = this.route.snapshot.params.password;
-    this.currentRole = sessionStorage.getItem('role');
   }
 
   getUsers() {
@@ -44,10 +49,23 @@ export class UserComponent implements OnInit {
       });
   }
 
+  openAddUserModal() {
+    this.name = "";
+    this.email = "";
+    this.password = "";
+    this.rolelist = "";
+    this.isAddUserModalOpen = true;
+  }
+
+  closeAddUserModal() {
+    this.isAddUserModalOpen = false;
+  }
+
   addUser() {
     let user = { name: this.name, email: this.email, role: this.rolelist, password: this.password };
     this.httpclient.post(BACKEND_URL + '/adduser', user, httpOptions)
       .subscribe((data: any) => {
+        this.closeAddUserModal();
         this.name = "";
         this.email = "";
         this.rolelist = "";

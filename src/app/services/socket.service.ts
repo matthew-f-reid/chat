@@ -1,18 +1,44 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import * as io from 'socket.io-client';
+import { BACKEND_URL } from './backend-url';
 
-const SERVER_URL = 'http://localhost:3000/chat';
+const SERVER_URL = BACKEND_URL + '/chat';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
   private socket;
+  private joinRequestDecisionSubject = new Subject<any>();
+  private hasJoinRequestDecisionListener = false;
 
   constructor() { }
 
   initSocket() {
-    this.socket = io(SERVER_URL);
+    if (!this.socket) {
+      this.socket = io(SERVER_URL);
+    }
+  }
+
+  registerGroupAdmin(name, role) {
+    this.initSocket();
+    this.socket.emit('registerGroupAdmin', { name, role });
+  }
+
+  onGroupJoinRequest(next) {
+    this.initSocket();
+    this.socket.removeAllListeners('groupJoinRequest');
+    this.socket.on('groupJoinRequest', request => next(request));
+  }
+
+  onJoinRequestDecision(): Observable<any> {
+    this.initSocket();
+    if (!this.hasJoinRequestDecisionListener) {
+      this.socket.on('joinRequestDecision', decision => this.joinRequestDecisionSubject.next(decision));
+      this.hasJoinRequestDecisionListener = true;
+    }
+    return this.joinRequestDecisionSubject.asObservable();
   }
 
   joinRoom(room, user) {
@@ -27,36 +53,26 @@ export class SocketService {
     this.socket.on('joined', res => next(res));
   }
 
-  createRoom(newRoom) {
-    this.socket.emit('newRoom', newRoom);
-  }
-
-  reqNumUsers(sel) {
-    this.socket.emit('numUsers', sel);
-  }
-
   getNumUsers(next) {
-    this.socket.on('numUsers', res => next(res));
+    this.socket.on('numusers', res => next(res));
   }
 
-  reqRoomList() {
-    this.socket.emit('roomList', 'list please');
+  onRoomUsers(next: (users: string[]) => void) {
+    this.initSocket();
+    this.socket.on('roomUsers', users => next(users));
   }
 
-  getRoomList(next) {
-    this.socket.on('roomList', res => next(res));
+  onRoomPresence(next: (presence: { user: string; action: string }) => void) {
+    this.initSocket();
+    this.socket.on('roomPresence', presence => next(presence));
   }
 
-  notice(next) {
-    this.socket.on('notice', res => next(res));
-  }
-
-  sendMessage(message, user) {
-    this.socket.emit('message', message, user);
+  sendMessage(message: string) {
+    this.socket.emit('message', message);
   }
 
   getMessage(next) {
-    this.socket.on('message', message => next(message));
+    this.socket.on('message', (message, user) => next(message, user));
   }
 
 }

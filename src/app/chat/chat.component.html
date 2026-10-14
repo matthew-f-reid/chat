@@ -1,30 +1,66 @@
-<div class="container">
-
-    <div class="wrapper fadeInDown">
-        <div id="formContent">
-            <div *ngIf="inRoom" class="fadeIn first">
-                <h1>{{currentroom}}</h1>
-                <h2>{{numusers}} Active Users</h2>
-                <h3>Notices</h3>
-                {{roomNotice}}<br />
-                <button (click)="clearNotice()" class="btn btn-primary">Clear notice</button><br />
-                <ul class="fadeIn second">
-                    <li *ngFor="let message of messages"><h3 class="username">{{message.name}}</h3><p>{{message.msg}}</p></li>
-                </ul>
-            </div>
-            <form>
-                <input *ngIf="inRoom" type="text" [(ngModel)]="messageContent" id="messageContent" class="fadeIn third"
-                    name="messageContent" placeholder="Enter Message">
-                <input *ngIf="inRoom" type="submit" (click)="chat()" class="fadeIn fourth" value="Chat">
-                <div class="form-group">
-                    <select [(ngModel)]="roomsList" name="roomslist">
-                        <option [ngValue]="null">Select Room</option>
-                        <option *ngFor="let room of rooms">{{room.group}} - {{room.room}}</option>
-                    </select><br /><br />
-                    <button *ngIf="!inRoom" (click)="joinRoom()" class="btn btn-primary">Join</button>&nbsp;
-                    <button *ngIf="inRoom" (click)="leaveRoom()" class="btn btn-primary">Leave</button>&nbsp;
-                </div>
-            </form>
+<div class="chat-page">
+    <section class="chat-room-picker" aria-label="Choose a chat room">
+        <div class="chat-room-picker-copy">
+            <h1>{{inRoom ? currentRoom : 'Your chat rooms'}}</h1>
+            <p *ngIf="inRoom">{{numUsers}} {{numUsers === 1 ? 'person' : 'people'}} online</p>
+            <p *ngIf="!inRoom">Choose one of your rooms to start chatting.</p>
         </div>
+        <div class="chat-room-controls">
+            <select *ngIf="!inRoom" [(ngModel)]="roomsList" name="roomslist" aria-label="Select a room">
+                <option [ngValue]="null">Select a room</option>
+                <option *ngFor="let room of rooms">{{room.group}} - {{room.room}}</option>
+            </select>
+            <button *ngIf="!inRoom" type="button" class="btn btn-primary" [disabled]="!roomsList"
+                (click)="joinRoom()">Join room</button>
+            <button *ngIf="inRoom" type="button" class="btn btn-secondary" (click)="leaveRoom()">Leave room</button>
+        </div>
+    </section>
+
+    <div *ngIf="inRoom" class="chat-layout">
+        <aside class="chat-presence-panel" aria-label="Room participants and activity">
+            <section class="chat-participants">
+                <h2>In this room <span>{{roomUsers.length}}</span></h2>
+                <ul>
+                    <li *ngFor="let user of roomUsers">
+                        <span class="presence-indicator" aria-hidden="true"></span>
+                        {{user}}
+                    </li>
+                    <li *ngIf="roomUsers.length === 0" class="chat-empty-state">No one is online yet.</li>
+                </ul>
+            </section>
+
+            <section class="chat-activity" aria-live="polite">
+                <h2>Room activity</h2>
+                <ul>
+                    <li *ngFor="let activity of roomActivities">
+                        <strong>{{activity.user}}</strong>
+                        {{activity.action === 'joined' ? 'joined the room' : 'left the room'}}
+                    </li>
+                    <li *ngIf="roomActivities.length === 0" class="chat-empty-state">No recent activity.</li>
+                </ul>
+            </section>
+        </aside>
+
+        <main class="chat-conversation" aria-label="Chat conversation">
+            <ul class="chat-messages" aria-live="polite">
+                <li *ngFor="let message of messages">
+                    <h3 class="username">{{message.name}}</h3>
+                    <p>{{message.msg}}</p>
+                </li>
+                <li *ngIf="messages.length === 0" class="chat-empty-state">
+                    No messages yet. Start the conversation.
+                </li>
+            </ul>
+            <form class="chat-compose" (ngSubmit)="chat()">
+                <input type="text" [(ngModel)]="messageContent" id="messageContent"
+                    name="messageContent" placeholder="Write a message…" aria-label="Write a message">
+                <button type="submit" class="btn btn-primary" [disabled]="!messageContent">Send</button>
+            </form>
+        </main>
+    </div>
+
+    <div *ngIf="!inRoom" class="chat-welcome">
+        <h2>Ready when you are</h2>
+        <p>Your room members and messages will appear here after you join a room.</p>
     </div>
 </div>

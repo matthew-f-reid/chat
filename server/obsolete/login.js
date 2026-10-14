@@ -1,11 +1,14 @@
 const fs = require('fs');
+const path = require('path');
+
+const usersPath = path.join(__dirname, 'JSON', 'users.json');
 
 // login to account
 
 module.exports = function(req, res){
-  fs.readFile('./JSON/users.json', 'utf8', (err, jsonString) =>{
+  fs.readFile(usersPath, 'utf8', (err, jsonString) =>{
     if(err){
-      console.log("file read failed: ", err);
+      console.error("file read failed: ", err);
       return;
     }
     
@@ -38,7 +41,7 @@ module.exports = function(req, res){
       }
     }
     catch(err){
-      console.log("error parsing JSON string: ", err);
+      console.error("error parsing JSON string: ", err);
     }
       
   });

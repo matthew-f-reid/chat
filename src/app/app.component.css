@@ -1,263 +1,241 @@
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin: 0;
+    border: 0;
+    border-bottom: 3px solid #c62828;
+    border-radius: 0;
+    background: #171717;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
 
-/* BASIC */
+.navbar .container-fluid {
+    display: flex;
+    width: min(100% - 32px, 1200px);
+    min-height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 auto;
+    padding: 0;
+}
 
-html {
-    background-color: #56baed;
-  }
-  
-  body {
-    font-family: "Poppins", sans-serif;
-    height: 100vh;
-  }
-  
-  a {
-    color: #92badd;
-    display:inline-block;
-    text-decoration: none;
-    font-weight: 400;
-  }
-  
-  h2 {
-    text-align: center;
-    font-size: 16px;
+.navbar .navbar-nav {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar .navbar-nav li {
+    padding: 0;
+}
+
+.navbar .navbar-nav .nav-link {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 7px;
+    color: #fff;
     font-weight: 600;
-    text-transform: uppercase;
-    display:inline-block;
-    margin: 40px 8px 10px 8px; 
-    color: #cccccc;
-  }
-  
-  
-  
-  /* STRUCTURE */
-  
-  .wrapper {
+    white-space: nowrap;
+}
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link:focus {
+    background: #c62828;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar-account {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 14px;
+}
+
+.navbar-user-name {
+    color: #fff;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.logout-button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    margin: 0;
+    padding: 8px 18px;
+    border-color: #fff;
+    background: transparent;
+    color: #fff;
+}
+
+.logout-button:hover {
+    border-color: #c62828;
+    background: #c62828;
+}
+
+.join-request-toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1100;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    max-width: min(440px, calc(100vw - 40px));
+    padding: 14px 18px;
+    border-left: 4px solid #c62828;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+    color: #171717;
+}
+
+.join-request-toast-content {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+}
+
+.join-request-toast-error {
+    color: #a51f1f;
+    font-size: 0.9rem;
+}
+
+.join-request-toast-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.join-request-toast-actions button {
+    min-height: 36px;
+    padding: 6px 14px;
+    border: 1px solid #c62828;
+    border-radius: 6px;
+    background: #c62828;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.join-request-toast-actions button:hover:not(:disabled) {
+    border-color: #a51f1f;
+    background: #a51f1f;
+}
+
+.join-request-toast-actions .join-request-reject {
+    border-color: #555;
+    background: #555;
+}
+
+.join-request-toast-actions .join-request-reject:hover:not(:disabled) {
+    border-color: #171717;
+    background: #171717;
+}
+
+.join-request-toast-actions button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.join-request-toast .join-request-dismiss {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #171717;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.account-notification-stack {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1090;
+    display: grid;
+    gap: 10px;
+    width: min(440px, calc(100vw - 40px));
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.account-notification,
+.account-notification-error {
     display: flex;
     align-items: center;
-    flex-direction: column; 
-    justify-content: center;
-    width: 100%;
-    min-height: 100%;
-    padding: 20px;
-  }
-  
-  #formContent {
-    -webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 10px 10px 10px 10px;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    border-left: 4px solid #c62828;
+    border-radius: 8px;
     background: #fff;
-    padding: 30px;
-    width: 90%;
-    max-width: 450px;
-    position: relative;
-    padding: 0px;
-    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    text-align: center;
-  }
-  
-  #formFooter {
-    background-color: #f6f6f6;
-    border-top: 1px solid #dce8f1;
-    padding: 25px;
-    text-align: center;
-    -webkit-border-radius: 0 0 10px 10px;
-    border-radius: 0 0 10px 10px;
-  }
-  
-  
-  
-  /* TABS */
-  
-  h2.inactive {
-    color: #cccccc;
-  }
-  
-  h2.active {
-    color: #0d0d0d;
-    border-bottom: 2px solid #5fbae9;
-  }
-  
-  
-  
-  /* FORM TYPOGRAPHY*/
-  
-  input[type=button], input[type=submit], input[type=reset]  {
-    background-color: #56baed;
-    border: none;
-    color: white;
-    padding: 15px 80px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    text-transform: uppercase;
-    font-size: 13px;
-    -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-    margin: 5px 20px 40px 20px;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-    background-color: #39ace7;
-  }
-  
-  input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
-    -moz-transform: scale(0.95);
-    -webkit-transform: scale(0.95);
-    -o-transform: scale(0.95);
-    -ms-transform: scale(0.95);
-    transform: scale(0.95);
-  }
-  
-  input[type=text] {
-    background-color: #f6f6f6;
-    border: none;
-    color: #0d0d0d;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 5px;
-    width: 85%;
-    border: 2px solid #f6f6f6;
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-  }
-  
-  input[type=text]:focus {
-    background-color: #fff;
-    border-bottom: 2px solid #5fbae9;
-  }
-  
-  input[type=text]:placeholder {
-    color: #cccccc;
-  }
-  
-  
-  
-  /* ANIMATIONS */
-  
-  /* Simple CSS3 Fade-in-down Animation */
-  .fadeInDown {
-    -webkit-animation-name: fadeInDown;
-    animation-name: fadeInDown;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-  }
-  
-  @-webkit-keyframes fadeInDown {
-    0% {
-      opacity: 0;
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+    color: #171717;
+}
+
+.account-notification button {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 6px 12px;
+}
+
+.account-notification button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.account-notification-error {
+    border-left-color: #a51f1f;
+    color: #a51f1f;
+}
+
+@media (max-width: 600px) {
+    .navbar .container-fluid {
+        width: calc(100% - 24px);
+        align-items: stretch;
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 0;
     }
-    100% {
-      opacity: 1;
-      -webkit-transform: none;
-      transform: none;
+
+    .navbar .navbar-nav {
+        align-items: stretch;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 4px;
     }
-  }
-  
-  @keyframes fadeInDown {
-    0% {
-      opacity: 0;
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
+
+    .navbar .navbar-nav li,
+    .navbar .navbar-nav .nav-link {
+        width: 100%;
     }
-    100% {
-      opacity: 1;
-      -webkit-transform: none;
-      transform: none;
+
+    .navbar .navbar-nav .nav-link {
+        padding: 9px 10px;
+        font-size: 0.95rem;
     }
-  }
-  
-  /* Simple CSS3 Fade-in Animation */
-  @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  
-  .fadeIn {
-    opacity:0;
-    -webkit-animation:fadeIn ease-in 1;
-    -moz-animation:fadeIn ease-in 1;
-    animation:fadeIn ease-in 1;
-  
-    -webkit-animation-fill-mode:forwards;
-    -moz-animation-fill-mode:forwards;
-    animation-fill-mode:forwards;
-  
-    -webkit-animation-duration:1s;
-    -moz-animation-duration:1s;
-    animation-duration:1s;
-  }
-  
-  .fadeIn.first {
-    -webkit-animation-delay: 0.4s;
-    -moz-animation-delay: 0.4s;
-    animation-delay: 0.4s;
-  }
-  
-  .fadeIn.second {
-    -webkit-animation-delay: 0.6s;
-    -moz-animation-delay: 0.6s;
-    animation-delay: 0.6s;
-  }
-  
-  .fadeIn.third {
-    -webkit-animation-delay: 0.8s;
-    -moz-animation-delay: 0.8s;
-    animation-delay: 0.8s;
-  }
-  
-  .fadeIn.fourth {
-    -webkit-animation-delay: 1s;
-    -moz-animation-delay: 1s;
-    animation-delay: 1s;
-  }
-  
-  /* Simple CSS3 Fade-in Animation */
-  .underlineHover:after {
-    display: block;
-    left: 0;
-    bottom: -10px;
-    width: 0;
-    height: 2px;
-    background-color: #56baed;
-    content: "";
-    transition: width 0.2s;
-  }
-  
-  .underlineHover:hover {
-    color: #0d0d0d;
-  }
-  
-  .underlineHover:hover:after{
-    width: 100%;
-  }
-  
-  
-  
-  /* OTHERS */
-  
-  *:focus {
-      outline: none;
-  } 
-  
-  #icon {
-    width:60%;
-  }
-  
+
+    .logout-button {
+        align-self: flex-end;
+    }
+
+    .navbar-account {
+        align-self: flex-end;
+    }
+
+    .account-notification-stack {
+        right: 12px;
+        bottom: 12px;
+        width: calc(100vw - 24px);
+    }
+}

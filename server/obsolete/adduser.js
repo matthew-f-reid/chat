@@ -15,8 +15,6 @@ module.exports = async function(db,app){
         user.email = req.body.email;
         user.role = req.body.role;
         user.password = req.body.password;
-        console.log(users);
-
         for(var i = 0; i < users.length; i++){
             if(user.name == users[i].user.name){
                 exist = true;
@@ -24,13 +22,10 @@ module.exports = async function(db,app){
             }
         }
         if(!exist){
-            console.log("doesnt exist");
             await collection.insertOne({user});
             res.send(await collection.find().toArray());
         } else {
-            console.log("exist");
             res.send(await collection.find().toArray());
         }
     });
 }
-
