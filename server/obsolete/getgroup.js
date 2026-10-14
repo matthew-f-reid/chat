@@ -5,7 +5,7 @@ const fs = require('fs');
 module.exports = function(req, res){
   fs.readFile('./JSON/groups.json', 'utf8', (err, jsonString) =>{
     if(err){
-      console.log("file read failed: ", err);
+      console.error("file read failed: ", err);
       return;
     }
     try{
@@ -25,7 +25,7 @@ module.exports = function(req, res){
       }
     }
     catch(err){
-      console.log("error parsing JSON string: ", err);
+      console.error("error parsing JSON string: ", err);
     }
       
   });

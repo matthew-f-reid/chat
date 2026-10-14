@@ -1,328 +1,305 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-ink: #171717;
+  --color-ink-muted: #5f5f5f;
+  --color-red: #c62828;
+  --color-red-dark: #a51f1f;
+  --color-red-soft: #fff0f0;
+  --color-white: #fff;
+  --color-canvas: #f5f5f5;
+  --color-border: #dedede;
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --radius-card: 12px;
+}
 
-/* BASIC */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--color-canvas);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  min-height: 42px;
+  border-radius: 7px;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.btn {
+  border: 1px solid var(--color-red);
+  background: var(--color-red);
+  color: var(--color-white);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.btn:hover {
+  border-color: var(--color-red-dark);
+  background: var(--color-red-dark);
+  color: var(--color-white);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(198, 40, 40, 0.28);
+  outline-offset: 2px;
+}
+
+.btn.btn-primary {
+  border-color: var(--color-red);
+  background: var(--color-red);
+  color: var(--color-white);
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+  border-color: var(--color-red-dark);
+  background: var(--color-red-dark);
+  color: var(--color-white);
+}
+
+.btn.btn-secondary {
+  border-color: #555;
+  background: #555;
+  color: var(--color-white);
+}
+
+.btn.btn-secondary:hover,
+.btn.btn-secondary:focus {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+a {
+  color: var(--color-red-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-ink);
+  line-height: 1.25;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea,
+.form-control {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #cfcfcf;
+  border-radius: 7px;
+  background: var(--color-white);
+  color: var(--color-ink);
+  font-size: 16px;
+  text-align: left;
+  box-shadow: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus,
+.form-control:focus {
+  border-color: var(--color-red);
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.12);
+}
+
+.container {
+  width: min(100% - 32px, 1200px);
+  max-width: 1200px;
+  margin: 28px auto;
+  padding: 0;
+}
+
 li {
   list-style: none;
-  text-align: left;
-}
-.username {
-  font-weight: bolder;
-}
-.sidenav {
-  display: flex;
-  flex-flow: column;
-  position: absolute;
-  left: 2%;
-}
-.navbar-nav {
-    display: flex;
-    -webkit-box-orient: horizontal;
-    flex-direction: row;
-}
-.navbar-nav li {
-    padding: 0 20px;
 }
 
 .group {
-  padding: 10px;
-  border: black 3px solid;
-  margin: 5px 0px;
+  margin: 0 0 18px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-top: 4px solid var(--color-red);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  box-shadow: var(--shadow-card);
 }
 
 .users {
-  padding: 10px;
-  margin: 5px 0px;
-  display: flow-root;
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+  background: #fff;
 }
-.users form{
-  padding: 5px 0px;
+
+.users form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 0 0;
 }
 
 .groupUsers {
   display: flex;
-  text-align: center;
-  border-bottom: black 3px solid;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 0 14px;
+  border-bottom: 1px solid var(--color-border);
 }
+
 .user {
-  padding: 5px;
+  min-width: 110px;
   margin: 2px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-canvas);
+  overflow-wrap: anywhere;
 }
+
 .title {
-  border-bottom: black 3px solid;
-  margin: 5px 20px -3px 0px;
+  margin: 8px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
 }
+
 .new {
-  text-align: center;
+  margin: 0 0 18px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+  background: #fafafa;
 }
+
+.new input,
+.new select {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.new button {
+  width: auto;
+  min-width: 100px;
+  padding: 8px 18px;
+}
+
 .roomUsers {
-  text-align: center;
+  display: grid;
+  gap: 12px;
 }
+
 .roomUser {
   display: flex;
-  border-bottom: black 3px solid;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-border);
 }
-.new button {
-  display: block;
+
+.table {
   width: 100%;
-  padding: 30px;
+  margin: 16px 0;
+  border-collapse: collapse;
+  background: var(--color-white);
+  box-shadow: var(--shadow-card);
 }
-.new input {
-  display: block;
-  width: 100%;
+
+.table th,
+.table td {
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  vertical-align: middle;
 }
-  body {
-    font-family: "Poppins", sans-serif;
-    height: 100vh;
+
+.table thead {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.table thead th {
+  color: var(--color-white);
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: min(100% - 24px, 1200px);
+    margin: 18px auto;
   }
-  
-  a {
-    color: #92badd;
-    display:inline-block;
-    text-decoration: none;
-    font-weight: 400;
+
+  .group {
+    padding: 14px;
   }
-  
-  h2 {
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: uppercase;
-    display: inline-block;
-    margin: 15px 20px;
-    color: black;
+
+  .users {
+    padding: 12px;
   }
-  
-  
-  
-  /* STRUCTURE */
-  
-  .wrapper {
-    display: flex;
-    align-items: center;
-    flex-direction: column; 
-    justify-content: center;
-    width: 100%;
-    min-height: 100%;
-    padding: 20px;
-  }
-  
-  #formContent {
-    -webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 10px 10px 10px 10px;
-    background: #fff;
-    padding: 30px;
-    width: 90%;
-    max-width: 450px;
-    position: relative;
-    padding: 0px;
-    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    text-align: center;
-  }
-  
-  #formFooter {
-    background-color: #f6f6f6;
-    border-top: 1px solid #dce8f1;
-    padding: 25px;
-    text-align: center;
-    -webkit-border-radius: 0 0 10px 10px;
-    border-radius: 0 0 10px 10px;
-  }
-  
-  
-  
-  /* TABS */
-  
-  h2.inactive {
-    color: #cccccc;
-  }
-  
-  h2.active {
-    color: #0d0d0d;
-    border-bottom: 2px solid #5fbae9;
-  }
-  
-  
-  
-  /* FORM TYPOGRAPHY*/
-  
-  input[type=button], input[type=submit], input[type=reset]  {
-    background-color: #56baed;
-    border: none;
-    color: white;
-    padding: 15px 80px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    text-transform: uppercase;
-    font-size: 13px;
-    -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-    margin: 5px 20px 40px 20px;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-    background-color: #39ace7;
-  }
-  
-  input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
-    -moz-transform: scale(0.95);
-    -webkit-transform: scale(0.95);
-    -o-transform: scale(0.95);
-    -ms-transform: scale(0.95);
-    transform: scale(0.95);
-  }
-  
-  input[type=text] {
-    background-color: #f6f6f6;
-    border: none;
-    color: #0d0d0d;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 5px;
-    width: 85%;
-    border: 2px solid #f6f6f6;
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-  }
-  
-  input[type=text]:focus {
-    background-color: #fff;
-    border-bottom: 2px solid #5fbae9;
-  }
-  
-  input[type=text]:placeholder {
-    color: #cccccc;
-  }
-  
-  
-  
-  /* ANIMATIONS */
-  
-  /* Simple CSS3 Fade-in-down Animation */
-  .fadeInDown {
-    -webkit-animation-name: fadeInDown;
-    animation-name: fadeInDown;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-  }
-  
-  @-webkit-keyframes fadeInDown {
-    0% {
-      opacity: 0;
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
-    }
-    100% {
-      opacity: 1;
-      -webkit-transform: none;
-      transform: none;
-    }
-  }
-  
-  @keyframes fadeInDown {
-    0% {
-      opacity: 0;
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
-    }
-    100% {
-      opacity: 1;
-      -webkit-transform: none;
-      transform: none;
-    }
-  }
-  
-  /* Simple CSS3 Fade-in Animation */
-  @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  
-  .fadeIn {
-    opacity:0;
-    -webkit-animation:fadeIn ease-in 1;
-    -moz-animation:fadeIn ease-in 1;
-    animation:fadeIn ease-in 1;
-  
-    -webkit-animation-fill-mode:forwards;
-    -moz-animation-fill-mode:forwards;
-    animation-fill-mode:forwards;
-  
-    -webkit-animation-duration:1s;
-    -moz-animation-duration:1s;
-    animation-duration:1s;
-  }
-  
-  .fadeIn.first {
-    -webkit-animation-delay: 0.4s;
-    -moz-animation-delay: 0.4s;
-    animation-delay: 0.4s;
-  }
-  
-  .fadeIn.second {
-    -webkit-animation-delay: 0.6s;
-    -moz-animation-delay: 0.6s;
-    animation-delay: 0.6s;
-  }
-  
-  .fadeIn.third {
-    -webkit-animation-delay: 0.8s;
-    -moz-animation-delay: 0.8s;
-    animation-delay: 0.8s;
-  }
-  
-  .fadeIn.fourth {
-    -webkit-animation-delay: 1s;
-    -moz-animation-delay: 1s;
-    animation-delay: 1s;
-  }
-  
-  /* Simple CSS3 Fade-in Animation */
-  .underlineHover:after {
+
+  .table {
     display: block;
-    left: 0;
-    bottom: -10px;
-    width: 0;
-    height: 2px;
-    background-color: #56baed;
-    content: "";
-    transition: width 0.2s;
+    overflow-x: auto;
+    white-space: nowrap;
   }
-  
-  .underlineHover:hover {
-    color: #0d0d0d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
-  
-  .underlineHover:hover:after{
-    width: 100%;
-  }
-  
-  
-  
-  /* OTHERS */
-  
-  *:focus {
-      outline: none;
-  } 
-  
-  #icon {
-    width:60%;
-  }
-  
+}

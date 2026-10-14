@@ -3,13 +3,43 @@ var url = "mongodb://localhost:27017/";
 var mongodb = require('mongodb');
 var ObjectID = mongodb.ObjectID;
 
-const dbName = 'mydb';
+const dbName = 'chatter';
 const dbUser = 'users';
 const dbGroups = 'groups';
+let notifyGroupAdmins = function () {};
+let notifyJoinRequestDecision = function () {};
+
+exports.setGroupRequestNotifier = function (notifier) {
+    notifyGroupAdmins = notifier;
+};
+
+exports.setJoinRequestDecisionNotifier = function (notifier) {
+    notifyJoinRequestDecision = notifier;
+};
+
+async function getDatabase(res, operation) {
+    let client;
+    try {
+        client = await MongoClient.connect(url, { useNewUrlParser: true });
+        await operation(client.db(dbName));
+    } catch (error) {
+        console.error(error);
+        if (!res.headersSent) {
+            res.status(500).send({ error: 'Database operation failed' });
+        }
+    } finally {
+        if (client) {
+            client.close();
+        }
+    }
+}
+
+function hasGroupMember(group, name) {
+    return (group.users || []).some(member => member.name === name);
+}
 
 exports.addUser = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("add user");
         if (err) throw err;
         let db = client.db(dbName);
         users = await db.collection(dbUser).find().toArray();
@@ -30,12 +60,10 @@ exports.addUser = function (req, res) {
             }
         }
         if (!exist) {
-            console.log("doesnt exist");
             await db.collection(dbUser).insertOne({ user });
             res.send(await db.collection(dbUser).find().toArray());
             client.close();
         } else {
-            console.log("exist");
             res.send(await db.collection(dbUser).find().toArray());
             client.close();
         }
@@ -44,7 +72,6 @@ exports.addUser = function (req, res) {
 
 exports.getUser = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("get users");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -58,7 +85,6 @@ exports.getUser = function (req, res) {
 
 exports.login = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("login");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -68,15 +94,21 @@ exports.login = function (req, res) {
         var user = {};
         user.name = doc.name;
         user.password = doc.password;
-        let userdb = await db.collection(dbUser).find({ "user.name": doc.name }).toArray();
+        let userdb = await db.collection(dbUser).find({
+            $or: [
+                { "user.name": doc.name },
+                { name: doc.name }
+            ]
+        }).toArray();
         if (userdb.length == 0) {
             user.valid = false;
         } else {
-            if (userdb[0].user.password == user.password) {
+            let storedUser = userdb[0].user || userdb[0];
+            if (storedUser.password == user.password) {
                 user.valid = true;
                 user.id = userdb[0]._id;
-                user.role = userdb[0].user.role;
-                user.email = userdb[0].user.email;
+                user.role = storedUser.role;
+                user.email = storedUser.email;
             } else {
                 user.valid = false;
             }
@@ -88,7 +120,6 @@ exports.login = function (req, res) {
 
 exports.updateUser = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("update user");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -106,7 +137,6 @@ exports.updateUser = function (req, res) {
 
 exports.deleteUser = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("del users");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -121,7 +151,6 @@ exports.deleteUser = function (req, res) {
 
 exports.addGroup = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("add group");
         if (err) throw err;
         let db = client.db(dbName);
         let exist = false;
@@ -137,12 +166,10 @@ exports.addGroup = function (req, res) {
             }
         }
         if (!exist) {
-            console.log("doesnt exist");
             await db.collection(dbGroups).insertOne({ name: doc.group, rooms: [], users: [{ name: doc.user }] });
             res.send(await db.collection(dbGroups).find().toArray());
             client.close();
         } else {
-            console.log("exist");
             res.send(await db.collection(dbGroups).find().toArray());
             client.close();
         }
@@ -151,7 +178,6 @@ exports.addGroup = function (req, res) {
 
 exports.delGroup = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("del group");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -166,7 +192,6 @@ exports.delGroup = function (req, res) {
 
 exports.getGroup = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("get groups");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -180,7 +205,6 @@ exports.getGroup = function (req, res) {
 
 exports.addRoom = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("add room");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -204,7 +228,6 @@ exports.addRoom = function (req, res) {
 
 exports.delRoom = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("del room");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -228,7 +251,6 @@ exports.delRoom = function (req, res) {
 
 exports.addUser2G = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("add user 2 group");
         if (err) throw err;
         let db = client.db(dbName);
         let exist = false;
@@ -251,14 +273,12 @@ exports.addUser2G = function (req, res) {
                     $each: [{ "name": doc.user }]
                 }
             }
-        };
+        }
         if (!exist) {
-            console.log("doesnt exist");
-            await db.collection(dbGroups).updateOne(search, update, options)
+            await db.collection(dbGroups).updateOne(search, update, options);
             res.send(await db.collection(dbGroups).find().toArray());
             client.close();
         } else {
-            console.log("exist");
             res.send(await db.collection(dbGroups).find().toArray());
             client.close();
         }
@@ -267,7 +287,6 @@ exports.addUser2G = function (req, res) {
 
 exports.delUser2G = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("del user 2 group");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -291,7 +310,6 @@ exports.delUser2G = function (req, res) {
 
 exports.addUser2R = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("add user 2 room");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -324,7 +342,6 @@ exports.addUser2R = function (req, res) {
 
 exports.delUser2R = function (req, res) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, client) {
-        console.log("del user 2 room");
         if (err) throw err;
         let db = client.db(dbName);
         let doc = req.body;
@@ -349,5 +366,235 @@ exports.delUser2R = function (req, res) {
         }
         res.send(await db.collection(dbGroups).find().toArray());
         client.close();
+    });
+};
+
+exports.requestGroup = function (req, res) {
+    getDatabase(res, async function (db) {
+        const groupId = req.body.group;
+        const userName = req.body.user;
+        if (!ObjectID.isValid(groupId) || !userName) {
+            return res.sendStatus(400);
+        }
+
+        const account = await db.collection(dbUser).findOne({
+            $or: [{ 'user.name': userName }, { name: userName }]
+        });
+        const user = account && (account.user || account);
+        if (!user || user.role !== 'User') {
+            return res.sendStatus(403);
+        }
+
+        const group = await db.collection(dbGroups).findOne({ _id: ObjectID(groupId) });
+        if (!group) {
+            return res.sendStatus(404);
+        }
+        if (hasGroupMember(group, userName)) {
+            return res.status(409).send({ error: 'Already a group member' });
+        }
+        if ((group.joinRequests || []).some(request => request.user === userName)) {
+            return res.status(200).send({ status: 'pending' });
+        }
+
+        await db.collection(dbGroups).updateOne(
+            { _id: group._id },
+            { $push: { joinRequests: { user: userName, requestedAt: new Date() } } }
+        );
+        notifyGroupAdmins({
+            type: 'group',
+            user: userName,
+            group: group.name,
+            groupId: group._id.toString()
+        });
+        res.status(201).send({ status: 'pending' });
+    });
+};
+
+exports.requestRoom = function (req, res) {
+    getDatabase(res, async function (db) {
+        const groupId = req.body.group;
+        const roomName = req.body.room;
+        const userName = req.body.user;
+        if (!ObjectID.isValid(groupId) || !roomName || !userName) {
+            return res.sendStatus(400);
+        }
+
+        const account = await db.collection(dbUser).findOne({
+            $or: [{ 'user.name': userName }, { name: userName }]
+        });
+        const user = account && (account.user || account);
+        if (!user || user.role !== 'User') {
+            return res.sendStatus(403);
+        }
+
+        const group = await db.collection(dbGroups).findOne({ _id: ObjectID(groupId) });
+        if (!group) {
+            return res.sendStatus(404);
+        }
+        if (!hasGroupMember(group, userName)) {
+            return res.status(403).send({ error: 'Join the group before requesting a room' });
+        }
+
+        const room = (group.rooms || []).find(item => item.name === roomName);
+        if (!room) {
+            return res.sendStatus(404);
+        }
+        if ((room.roomUsers || []).some(member => member.name === userName)) {
+            return res.status(409).send({ error: 'Already a room member' });
+        }
+        if ((room.joinRequests || []).some(request => request.user === userName)) {
+            return res.status(200).send({ status: 'pending' });
+        }
+
+        await db.collection(dbGroups).updateOne(
+            { _id: group._id, 'rooms.name': roomName },
+            { $push: { 'rooms.$.joinRequests': { user: userName, requestedAt: new Date() } } }
+        );
+        notifyGroupAdmins({
+            type: 'room',
+            user: userName,
+            group: group.name,
+            room: roomName,
+            groupId: group._id.toString()
+        });
+        res.status(201).send({ status: 'pending' });
+    });
+};
+
+exports.decideJoinRequest = function (req, res) {
+    getDatabase(res, async function (db) {
+        const groupId = req.body.group;
+        const userName = req.body.user;
+        const reviewerName = req.body.reviewer;
+        const requestType = req.body.type;
+        const roomName = req.body.room;
+        const approve = req.body.approve === true;
+        if (!ObjectID.isValid(groupId) || !userName || !reviewerName ||
+            (requestType !== 'group' && requestType !== 'room') ||
+            (requestType === 'room' && !roomName)) {
+            return res.sendStatus(400);
+        }
+
+        const reviewerAccount = await db.collection(dbUser).findOne({
+            $or: [{ 'user.name': reviewerName }, { name: reviewerName }]
+        });
+        const reviewer = reviewerAccount && (reviewerAccount.user || reviewerAccount);
+        if (!reviewer || (reviewer.role !== 'Super Admin' && reviewer.role !== 'Group Admin')) {
+            return res.sendStatus(403);
+        }
+
+        const group = await db.collection(dbGroups).findOne({ _id: ObjectID(groupId) });
+        if (!group) {
+            return res.sendStatus(404);
+        }
+
+        let result;
+        if (requestType === 'group') {
+            if (!(group.joinRequests || []).some(request => request.user === userName)) {
+                return res.sendStatus(404);
+            }
+            const update = { $pull: { joinRequests: { user: userName } } };
+            if (approve) {
+                update.$addToSet = { users: { name: userName } };
+            }
+            result = await db.collection(dbGroups).updateOne({ _id: group._id }, update);
+        } else {
+            if (!hasGroupMember(group, userName)) {
+                return res.status(400).send({ error: 'User must be a group member before joining a room' });
+            }
+            const room = (group.rooms || []).find(item => item.name === roomName);
+            if (!room || !(room.joinRequests || []).some(request => request.user === userName)) {
+                return res.sendStatus(404);
+            }
+            const update = { $pull: { 'rooms.$.joinRequests': { user: userName } } };
+            if (approve) {
+                update.$addToSet = { 'rooms.$.roomUsers': { name: userName } };
+            }
+            result = await db.collection(dbGroups).updateOne(
+                { _id: group._id, 'rooms.name': roomName },
+                update
+            );
+        }
+
+        if (!result.matchedCount) {
+            return res.sendStatus(404);
+        }
+        const account = await db.collection(dbUser).findOne({
+            $or: [{ 'user.name': userName }, { name: userName }]
+        });
+        if (!account) {
+            return res.sendStatus(404);
+        }
+        const notificationId = new ObjectID();
+        const location = requestType === 'room'
+            ? group.name + ' / ' + roomName
+            : group.name;
+        const notification = {
+            _id: notificationId,
+            type: requestType,
+            groupId: group._id.toString(),
+            group: group.name,
+            room: roomName || null,
+            decision: approve ? 'approved' : 'rejected',
+            message: 'Your request to join ' + location + ' was ' + (approve ? 'accepted.' : 'rejected.'),
+            createdAt: new Date(),
+            read: false
+        };
+        const notificationPath = account.user ? 'user.notifications' : 'notifications';
+        await db.collection(dbUser).updateOne(
+            { _id: account._id },
+            { $push: { [notificationPath]: notification } }
+        );
+        notifyJoinRequestDecision({
+            user: userName,
+            groupId: group._id.toString(),
+            type: requestType,
+            room: roomName || null,
+            decision: approve ? 'approved' : 'rejected',
+            notification
+        });
+        res.send({ status: approve ? 'approved' : 'rejected', notification });
+    });
+};
+
+exports.getNotifications = function (req, res) {
+    getDatabase(res, async function (db) {
+        const userName = req.body && req.body.user;
+        if (!userName) {
+            return res.sendStatus(400);
+        }
+        const account = await db.collection(dbUser).findOne({
+            $or: [{ 'user.name': userName }, { name: userName }]
+        });
+        if (!account) {
+            return res.sendStatus(404);
+        }
+        const user = account.user || account;
+        res.send((user.notifications || []).filter(notification => !notification.read));
+    });
+};
+
+exports.dismissNotification = function (req, res) {
+    getDatabase(res, async function (db) {
+        const userName = req.body && req.body.user;
+        const notificationId = req.body && req.body.notification;
+        if (!userName || !ObjectID.isValid(notificationId)) {
+            return res.sendStatus(400);
+        }
+        const account = await db.collection(dbUser).findOne({
+            $or: [{ 'user.name': userName }, { name: userName }]
+        });
+        if (!account) {
+            return res.sendStatus(404);
+        }
+        const notificationPath = account.user ? 'user.notifications' : 'notifications';
+        const result = await db.collection(dbUser).updateOne(
+            { _id: account._id, [notificationPath + '._id']: ObjectID(notificationId) },
+            { $set: { [notificationPath + '.$.read']: true } }
+        );
+        if (!result.matchedCount) {
+            return res.sendStatus(404);
+        }
+        res.send({ status: 'dismissed' });
     });
 };

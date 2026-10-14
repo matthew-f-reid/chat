@@ -1,0 +1,70 @@
+.wrapper {
+    display: flex;
+    min-height: calc(100vh - 120px);
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 5vw, 48px);
+}
+
+#formContent {
+    width: min(100%, 440px);
+    padding: clamp(24px, 5vw, 40px);
+    border: 1px solid var(--color-border);
+    border-top: 5px solid var(--color-red);
+    border-radius: var(--radius-card);
+    background: var(--color-white);
+    text-align: center;
+    box-shadow: var(--shadow-card);
+}
+
+#formContent h1 {
+    margin: 0 0 24px;
+    font-size: clamp(1.8rem, 5vw, 2.25rem);
+}
+
+#formContent form {
+    display: grid;
+    gap: 12px;
+}
+
+#formContent input[type="text"],
+#formContent input[type="password"] {
+    width: 100%;
+    margin: 0;
+}
+
+#formContent .btn {
+    width: 100%;
+    min-height: 48px;
+}
+
+#formFooter {
+    margin: 24px calc(clamp(24px, 5vw, 40px) * -1) calc(clamp(24px, 5vw, 40px) * -1);
+    padding: 18px;
+    border-top: 1px solid var(--color-border);
+    background: #fafafa;
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
+}
+
+#formFooter h2 {
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+}
+
+.fadeIn,
+.fadeIn.first,
+.fadeIn.second,
+.fadeIn.third,
+.fadeIn.fourth {
+    opacity: 1;
+    animation: none;
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        min-height: calc(100vh - 160px);
+        padding: 12px;
+    }
+}

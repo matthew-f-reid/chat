@@ -21,5 +21,5 @@ app.post('/updateuser', require('./updateuser.js'));
 app.post('/getgroup', require('./getgroup.js'));
 app.post('/addgroup', require('./addgroup.js'));
 
-sockets.connect(io, PORT);
+sockets.connect(io);
 server.listen(http, PORT);

@@ -1,13 +1,42 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <ul class="nav navbar-nav">
-      <li><a class="nav-link" routerLink="user">Manage Users</a></li>
-      <li><a class="nav-link" routerLink="group">Manage Groups</a></li>
-      <li><a class="nav-link" routerLink="chat">Chat</a></li>
-      <input *ngIf="loggedIn" type="submit" (click)="logout()" class="fadeIn first" value="Log Out">
+      <li *ngIf="canManageUsers"><a class="nav-link" routerLink="/user">Manage Users</a></li>
+      <li *ngIf="loggedIn"><a class="nav-link" routerLink="/group">Groups</a></li>
+      <li *ngIf="loggedIn"><a class="nav-link" routerLink="/chat">Chat</a></li>
     </ul>
+    <div *ngIf="loggedIn" class="navbar-account">
+      <span class="navbar-user-name">{{currentUserName}}</span>
+      <button type="button" (click)="logout()" class="logout-button">Log Out</button>
+    </div>
   </div>
 </nav>
 <div class="container">
   <router-outlet></router-outlet>
+</div>
+<div class="join-request-toast" *ngIf="joinRequestNotification" role="status">
+  <div class="join-request-toast-content">
+    <span>{{joinRequestNotification}}</span>
+    <span *ngIf="joinRequestActionError" class="join-request-toast-error">{{joinRequestActionError}}</span>
+    <div *ngIf="activeJoinRequest && canManageUsers" class="join-request-toast-actions">
+      <button type="button" class="join-request-accept" [disabled]="isHandlingJoinRequest"
+        (click)="decideJoinRequest(true)">Accept</button>
+      <button type="button" class="join-request-reject" [disabled]="isHandlingJoinRequest"
+        (click)="decideJoinRequest(false)">Reject</button>
+    </div>
+  </div>
+  <button type="button" class="join-request-dismiss" aria-label="Dismiss notification"
+    (click)="dismissJoinRequestNotification()">&times;</button>
+</div>
+<div class="account-notification-stack" *ngIf="accountNotifications.length || accountNotificationError">
+  <div class="account-notification-error" *ngIf="accountNotificationError" role="alert">
+    {{accountNotificationError}}
+  </div>
+  <div class="account-notification" *ngFor="let notification of accountNotifications" role="alert">
+    <span>{{notification.message}}</span>
+    <button type="button" [disabled]="notification.isDismissing"
+      (click)="dismissAccountNotification(notification)">
+      {{notification.isDismissing ? 'Dismissing…' : 'Dismiss'}}
+    </button>
+  </div>
 </div>

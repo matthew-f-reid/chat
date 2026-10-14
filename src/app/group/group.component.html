@@ -1,78 +1,153 @@
-<div class="container">
-    <div class="sidenav">
-        <a *ngFor="let group of groups" href="#div{{group.name}}.group" target="_self">{{group.name}}</a>
-    </div>
-    <form class="new" *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'">
-        <div class="newTitle">
-            <h3>New group name</h3>
+<div class="group-page">
+    <nav class="group-sidebar" aria-label="Groups">
+        <h2>Groups</h2>
+        <div *ngFor="let group of groups" class="group-sidebar-item">
+            <button type="button" class="group-link" [class.active]="group._id === selectedGroupId"
+                [attr.aria-current]="group._id === selectedGroupId ? 'page' : null"
+                (click)="selectGroup(group)">{{group.name}}</button>
         </div>
-        <input type="text" #groupName class="form-control" placeholder="Enter New Group Name" />
-        <br>
-        <button (click)="addGroup(groupName.value)" class="btn btn-primary">Add</button>
-    </form>
-    <div id="{{group.name}}" class="group" *ngFor="let group of groups">
-        <h1>{{group.name}} <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"
-                (click)="delGroup(group.name)" class="btn btn-primary">Delete Group</button>
-        </h1>
-        <div class="users">
-            <div class="title">
-                <h2>Users</h2>
-            </div>
-            <div class="groupUsers">
-                <div class="user" *ngFor="let user of group.users">
-                    {{user.name}}<br>
-                    <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"
-                        (click)="delUser2G(user.name, group._id)" class="btn btn-primary">Remove</button>
+    </nav>
+
+    <main class="group-content">
+        <header class="group-page-header">
+            <h1>{{isManagingGroups ? (isGroupAdmin() ? 'Manage Groups' : 'Manage Groups and Rooms') : 'Groups'}}</h1>
+            <button *ngIf="canManageGroupContent()" type="button" class="btn btn-primary"
+                (click)="toggleGroupManagement()">
+                {{isManagingGroups ? 'Done Managing' : (isGroupAdmin() ? 'Manage Groups' : 'Manage Groups and Rooms')}}
+            </button>
+        </header>
+
+        <section class="pending-requests request-inbox"
+            *ngIf="isGroupAdmin() && hasPendingJoinRequests()">
+            <h2>Requests awaiting review</h2>
+            <div *ngFor="let group of groups">
+                <div class="pending-request" *ngFor="let request of group.joinRequests">
+                    <span>{{request.user}} wants to join {{group.name}}</span>
+                    <button type="button" class="btn btn-primary"
+                        (click)="decideJoinRequest(group, request.user, 'group', null, true)">Accept</button>
+                    <button type="button" class="btn btn-secondary"
+                        (click)="decideJoinRequest(group, request.user, 'group', null, false)">Reject</button>
                 </div>
-            </div>
-            <form *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'">
-                <select #uNameG>
-                    <option *ngFor="let totalUser of totalUsers">{{totalUser.user.name}}</option>
-                </select><br>
-                <button *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin'"
-                    (click)="addUser2G(uNameG.value, group._id)" class="btn btn-primary">Add</button>
-            </form>
-        </div>
-        <div class="users">
-            <form class="new"
-                *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin' || currentUserRole == 'Group Assist'">
-                <div class="newTitle">
-                    <h3>New room name</h3>
-                </div>
-                <input type="text" #roomName class="form-control" placeholder="Enter Room Name" />
-                <br>
-                <button (click)="addRoom(group, roomName.value, group.name)" class="btn btn-primary">Add</button>
-            </form>
-            <div class="title">
-                <h3>Rooms</h3>
-            </div>
-            <div class="roomUsers">
                 <div *ngFor="let room of group.rooms">
-                    <div class="roomUser">
-                        <div class="title">
-                            <h2>{{room.name}}</h2>
-                            <br>
-                            <button (click)="delRoom(room.name, group._id)" class="btn btn-primary">Delete Room</button>
-                        </div>
-                        <div class="user" *ngFor="let user of room.roomUsers">
-                            {{user.name}}<br>
-                            <button
-                                *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin' || currentUserRole == 'Group Assist'"
-                                (click)="delUser2R(user.name, room.name, group._id)"
-                                class="btn btn-primary">Remove</button>
-                        </div>
-                        <form>
-                            <select #uNameR>
-                                <option *ngFor="let user of group.users">{{user.name}}</option>
-                            </select><br>
-                            <button
-                                *ngIf="currentUserRole == 'Super Admin' || currentUserRole == 'Group Admin' || currentUserRole == 'Group Assist'"
-                                (click)="addUser2R(uNameR.value, room.name, group._id)"
-                                class="btn btn-primary">Add</button>
-                        </form>
+                    <div class="pending-request" *ngFor="let request of room.joinRequests">
+                        <span>{{request.user}} wants to join {{group.name}} / {{room.name}}</span>
+                        <button type="button" class="btn btn-primary"
+                            (click)="decideJoinRequest(group, request.user, 'room', room.name, true)">Accept</button>
+                        <button type="button" class="btn btn-secondary"
+                            (click)="decideJoinRequest(group, request.user, 'room', room.name, false)">Reject</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <form class="new" *ngIf="isManagingGroups && canManageGroupContent()">
+            <div class="newTitle">
+                <h3>Create a group</h3>
+            </div>
+            <input type="text" [(ngModel)]="newGroupName" name="newGroupName" class="form-control"
+                placeholder="Enter group name" />
+            <button type="button" (click)="addGroup()" class="btn btn-primary">Create Group</button>
+        </form>
+
+        <p class="join-request-feedback" *ngIf="joinRequestFeedback" role="status">{{joinRequestFeedback}}</p>
+        <div class="group-empty" *ngIf="groups.length === 0">No groups available.</div>
+
+        <section class="group" *ngFor="let group of groups" [hidden]="group._id !== selectedGroupId">
+            <h1>
+                {{group.name}}
+                <button type="button" *ngIf="isManagingGroups && isGroupAdmin()"
+                    (click)="delGroup(group.name)" class="btn btn-primary">Delete Group</button>
+            </h1>
+
+            <div *ngIf="currentUserRole === 'User' && !isGroupMember(group)" class="access-request">
+                <button type="button" *ngIf="!hasGroupRequest(group)" (click)="requestGroupAccess(group)"
+                    class="btn btn-primary">Request to Join Group</button>
+                <span *ngIf="hasGroupRequest(group)" class="request-pending">Group request pending</span>
+            </div>
+
+            <div class="users" *ngIf="isGroupMember(group) || isGroupAdmin()">
+                <div class="title">
+                    <h2>Users</h2>
+                </div>
+                <div class="groupUsers">
+                    <div class="user" *ngFor="let user of group.users">
+                        {{user.name}}<br>
+                        <button type="button"
+                            *ngIf="isManagingGroups && isGroupAdmin()"
+                            (click)="delUser2G(user.name, group._id)" class="btn btn-primary">Remove</button>
+                    </div>
+                </div>
+                <form *ngIf="isManagingGroups && isGroupAdmin()">
+                    <select #uNameG>
+                        <option *ngFor="let totalUser of totalUsers">{{totalUser.user.name}}</option>
+                    </select>
+                    <button type="button" (click)="addUser2G(uNameG.value, group._id)"
+                        class="btn btn-primary">Add</button>
+                </form>
+            </div>
+
+            <div class="users" *ngIf="isGroupMember(group) || isGroupAdmin()">
+                <div class="title">
+                    <h3>Rooms</h3>
+                    <button *ngIf="isManagingGroups && (isGroupAdmin() || currentUserRole == 'Group Assist')"
+                        type="button" class="btn btn-primary" (click)="openAddRoomModal(group)">Add New Room</button>
+                </div>
+                <div class="roomUsers">
+                    <section *ngFor="let room of group.rooms" class="roomUser">
+                        <div class="room-details">
+                            <div class="title">
+                                <h2>{{room.name}}</h2>
+                                <button type="button" *ngIf="isManagingGroups && isGroupAdmin()"
+                                    (click)="delRoom(room.name, group._id)" class="btn btn-primary">Delete Room</button>
+                            </div>
+                        </div>
+                        <div class="user" *ngFor="let user of room.roomUsers">
+                            {{user.name}}<br>
+                            <button type="button"
+                                *ngIf="isManagingGroups && (isGroupAdmin() || currentUserRole == 'Group Assist')"
+                                (click)="delUser2R(user.name, room.name, group._id)"
+                                class="btn btn-primary">Remove</button>
+                        </div>
+                        <form *ngIf="isManagingGroups && (isGroupAdmin() || currentUserRole == 'Group Assist')">
+                            <select #uNameR>
+                                <option *ngFor="let user of group.users">{{user.name}}</option>
+                            </select>
+                            <button type="button"
+                                (click)="addUser2R(uNameR.value, room.name, group._id)"
+                                class="btn btn-primary">Add</button>
+                        </form>
+
+                        <div *ngIf="currentUserRole === 'User' && isGroupMember(group) && !isRoomMember(room)"
+                            class="access-request">
+                            <button type="button" *ngIf="!hasRoomRequest(room)"
+                                (click)="requestRoomAccess(group, room)" class="btn btn-primary">Request to Join Room</button>
+                            <span *ngIf="hasRoomRequest(room)" class="request-pending">Room request pending</span>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+
+            <div *ngIf="isAddRoomModalOpen && roomModalGroupId === group._id"
+                class="room-modal-backdrop" (click)="closeAddRoomModal()">
+                <section class="room-modal" role="dialog" aria-modal="true" aria-labelledby="new-room-title"
+                    (click)="$event.stopPropagation()">
+                    <h1 id="new-room-title">Add a room to {{group.name}}</h1>
+                    <form (ngSubmit)="addRoom(group._id, roomName.value)">
+                        <label for="new-room-name">Room name</label>
+                        <input id="new-room-name" type="text" #roomName class="form-control"
+                            placeholder="Enter room name" required autofocus />
+                        <p *ngIf="roomModalError" class="room-modal-error" role="alert">{{roomModalError}}</p>
+                        <div class="room-modal-actions">
+                            <button type="button" class="btn btn-secondary" [disabled]="isAddingRoom"
+                                (click)="closeAddRoomModal()">Cancel</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="isAddingRoom">
+                                {{isAddingRoom ? 'Adding…' : 'Add Room'}}
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </section>
+    </main>
 </div>

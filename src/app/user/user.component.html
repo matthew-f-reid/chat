@@ -1,25 +1,33 @@
-<div *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" class="wrapper fadeInDown">
-    <div id="formContent">
-        <div class="fadeIn first">
-            <h1>New User</h1>
-        </div>
-        <form>
-            <input type="text" [(ngModel)]="name" id="name" class="fadeIn second" name="name" placeholder="name">
-            <input type="text" [(ngModel)]="email" id="email" class="fadeIn second" name="email" placeholder="email">
-            <input type="text" [(ngModel)]="password" id="password" class="fadeIn third" name="password"
-                placeholder="password">
-            <input type="submit" (click)="addUser()" class="fadeIn fourth" value="Add User">
-            <select [(ngModel)]="rolelist" name="rolelist">
+<div *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" class="user-actions">
+    <button type="button" class="btn btn-primary" (click)="openAddUserModal()">Add New User</button>
+</div>
+<div *ngIf="isAddUserModalOpen && (currentRole == 'Super Admin' || currentRole == 'Group Admin')"
+    class="user-modal-backdrop" (click)="closeAddUserModal()">
+    <section class="user-modal" role="dialog" aria-modal="true" aria-labelledby="new-user-title"
+        (click)="$event.stopPropagation()">
+        <button type="button" class="user-modal-close" aria-label="Close" (click)="closeAddUserModal()">&times;</button>
+        <h1 id="new-user-title">New User</h1>
+        <form (ngSubmit)="addUser()">
+            <input type="text" [(ngModel)]="name" id="name" class="fadeIn second" name="name" placeholder="name"
+                required>
+            <input type="email" [(ngModel)]="email" id="email" class="fadeIn second" name="email" placeholder="email"
+                required>
+            <input type="password" [(ngModel)]="password" id="password" class="fadeIn second" name="password"
+                placeholder="password" required>
+            <select [(ngModel)]="rolelist" name="rolelist" class="fadeIn second" required>
+                <option value="" disabled>Select a role</option>
                 <option *ngIf="currentRole == 'Super Admin'" value="Super Admin">Super Admin</option>
                 <option *ngIf="currentRole == 'Super Admin'" value="Group Admin">Group Admin</option>
                 <option *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin'" value="Group Assist">Group
                     Assist</option>
-                <option
-                    *ngIf="currentRole == 'Super Admin' || currentRole == 'Group Admin' || currentRole == 'Group Assist'"
-                    value="User">User</option>
+                <option value="User">User</option>
             </select>
+            <div class="user-modal-actions">
+                <button type="button" class="btn btn-secondary" (click)="closeAddUserModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </div>
         </form>
-    </div>
+    </section>
 </div>
 <table *ngIf="currentRole == 'Super Admin'" class="table">
     <thead>

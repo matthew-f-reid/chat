@@ -4,11 +4,10 @@ module.exports = function(req, res){
     groups = [];
   fs.readFile('./JSON/groups.json', 'utf8', (err, jsonString) =>{
     if(err){
-      console.log("file read failed: ", err);
+      console.error("file read failed: ", err);
       return;
     }
     try{
-        console.log(req.body);
       const file = JSON.parse(jsonString);
       if(!req.body){
         return res.sendStatus(400);
@@ -34,7 +33,6 @@ module.exports = function(req, res){
                         
                         fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
                             if(err) throw err;
-                            console.log(err);
                         });
                         i = file.length;
                         j = users.length;
@@ -52,12 +50,9 @@ module.exports = function(req, res){
           file.push(group);
           fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
             if(err) throw err;
-            console.log(err);
           });
             res.send(file);
         } else if(req.body.type == 'addroom'){
-          console.log("file");
-          console.log(file);
           let roomName = req.body.room;
           let userName = req.body.user;
           let groupName = req.body.group;
@@ -68,15 +63,10 @@ module.exports = function(req, res){
               i = file.length;
             }
           }
-          console.log("file index");
-          console.log(file[index]);
           room = {"name": roomName, roomUsers:[{"name": userName}]};
-          console.log("room");
-          console.log(room);
           file[index].rooms.push(room);
           fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
             if(err) throw err;
-            console.log(err);
           });
           res.send(file);
         } else if(req.body.type == 'adduser2R'){
@@ -92,8 +82,6 @@ module.exports = function(req, res){
                 if(roomName == file[i].rooms[j].name){
                   let count = 0
                   for(let k = 0; k < file[i].rooms[j].roomUsers.length; k++){
-                    console.log("file[i].rooms[j].roomUsers");
-                    console.log(file[i].rooms[j].roomUsers);
                     if(userName == file[i].rooms[j].roomUsers[k]){
                       count++;
                     }
@@ -102,7 +90,6 @@ module.exports = function(req, res){
                     file[i].rooms[j].roomUsers.push({"name": userName});
                     fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
                       if(err) throw err;
-                      console.log(err);
                     });
                     i = file.length;
                     j = size;
@@ -126,28 +113,20 @@ module.exports = function(req, res){
           }
           fs.writeFile('./JSON/groups.json', JSON.stringify(fileGroup, null, "\t"), function(err){
             if(err) throw err;
-            console.log(err);
           });
           res.send(fileGroup);
         } else if(req.body.type == 'delroom'){
           let group = req.body.group;
           let room = req.body.room;
           let fileGroup = [];
-          console.log("group");
-          console.log(group);
-          console.log("room");
-          console.log(room);
           for(let i = 0; i < file.length; i++){
             fileGroup.push(file[i]);
           }
-          console.log("fileGroup");
-          console.log(fileGroup);
           for(let i = 0; i < fileGroup.length; i++){
             size = fileGroup[i].rooms.length;
             if(group == fileGroup[i].name){
               for(let j = 0; j < size; j++){
                 if(room == fileGroup[i].rooms[j].name){
-                  console.log("slipce");
                   fileGroup[i].rooms.splice(j, 1);
                   i = fileGroup[i].rooms.length;
                 }
@@ -156,7 +135,6 @@ module.exports = function(req, res){
           }
           fs.writeFile('./JSON/groups.json', JSON.stringify(fileGroup, null, "\t"), function(err){
             if(err) throw err;
-            console.log(err);
           });
           res.send(fileGroup);
         } else if(req.body.type == 'deluser2G'){
@@ -181,7 +159,6 @@ module.exports = function(req, res){
           }
           fs.writeFile('./JSON/groups.json', JSON.stringify(fileArray, null, "\t"), function(err){
             if(err) throw err;
-            console.log(err);
           });
           res.send(fileArray);
         } else if(req.body.type == 'deluser2R'){
@@ -213,14 +190,13 @@ module.exports = function(req, res){
           
           fs.writeFile('./JSON/groups.json', JSON.stringify(fileArray, null, "\t"), function(err){
             if(err) throw err;
-            console.log(err);
           });
           res.send(file);
         }
       }
     }
     catch(err){
-      console.log("error parsing JSON string: ", err);
+      console.error("error parsing JSON string: ", err);
     }
       
   });

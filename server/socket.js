@@ -2,116 +2,87 @@ module.exports = {
 
     //sockets for chat
 
-    connect: function (io, PORT) {
-        var rooms = ["room1", "room2", "room3"];
-        var socketRoom = [];
-        var socketRoomnum = [];
+    connect: function (io) {
+        const socketRoom = [];
+        var roomParticipants = {};
 
         const chat = io.of('/chat');
 
+        function participantsInRoom(room) {
+            return Array.from(new Set((roomParticipants[room] || []).map(participant => participant.name)));
+        }
+
+        function removeSocketFromRoom(socket, notify) {
+            const index = socketRoom.findIndex(entry => entry.id === socket.id);
+            if (index === -1) {
+                return;
+            }
+
+            const participant = socketRoom[index];
+            socketRoom.splice(index, 1);
+            socket.leave(participant.room);
+            const members = roomParticipants[participant.room] || [];
+            roomParticipants[participant.room] = members.filter(member => member.id !== socket.id);
+            if (roomParticipants[participant.room].length === 0) {
+                delete roomParticipants[participant.room];
+            }
+
+            if (notify) {
+                chat.to(participant.room).emit('roomPresence', {
+                    user: participant.name,
+                    action: 'left'
+                });
+                chat.to(participant.room).emit('roomUsers', participantsInRoom(participant.room));
+            }
+        }
+
         chat.on('connection', (socket) => {
-            socket.on('message', (message, user) => {
-                for (i = 0; i < socketRoom.length; i++) {
-                    console.log("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
-                    console.log("socketRoom");
-                    console.log(socketRoom[i]);
-                    if (socketRoom[i][0] == socket.id) {
-                        console.log("message");
-                        console.log(message);
-                        console.log("user");
-                        console.log(user);
-                        console.log("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
-                        chat.to(socketRoom[i][1]).emit('message', message, user);
-                    }
+            socket.on('registerGroupAdmin', (account) => {
+                if (account && (account.role === 'Super Admin' || account.role === 'Group Admin')) {
+                    socket.join('group-admins');
                 }
             });
 
-            socket.on('newroom', (newroom) => {
-                if (rooms.indexOf(newroom) == -1) {
-                    rooms.push(newroom);
-                    chat.emit('roomlist', JSON.stringify(rooms));
+            socket.on('message', (message) => {
+                const participant = socketRoom.find(entry => entry.id === socket.id);
+                if (participant && typeof message === 'string' && message.trim()) {
+                    chat.to(participant.room).emit('message', message, participant.name);
                 }
-            });
-
-            socket.on('roomlist', (m) => {
-                chat.emit('roomlist', JSON.stringify(rooms));
-            });
-
-            socket.on('numusers', (room) => {
-                var usercount = 0;
-                for (i = 0; i < socketRoomnum.length; i++) {
-                    if (socketRoomnum[i][0] == room) {
-                        usercount = socketRoomnum[i][1];
-                    }
-                }
-                chat.in(room).emit('numusers', usercount);
             });
 
             socket.on("joinRoom", (room, user) => {
+                if (typeof room !== 'string' || !room || typeof user !== 'string' || !user) {
+                    return;
+                }
+                removeSocketFromRoom(socket, true);
                 socket.join(room, () => {
-                    var inroomSocketarray = false;
-
-                    for (i = 0; i < socketRoom.length; i++) {
-                        if (socketRoom[i][0] == socket.id) {
-                            socketRoom[i][1] = room;
-                            inroom = true;
-                        }
-                    }
-                    if (inroomSocketarray == false) {
-                        socketRoom.push([socket.id, room]);
-                        var hasroomnum = false;
-                        for (j = 0; j < socketRoomnum.length; j++) {
-
-                            if (socketRoomnum[j][0] == room) {
-                                socketRoomnum[j][1] = socketRoomnum[j][1] + 1;
-                                hasroomnum = true;
-                            }
-                        }
-                        if (hasroomnum == false) {
-                            socketRoomnum.push([room, 1]);
-                        }
-                    }
-
-                    chat.in(room).emit("notice", user + " has joined the chat");
+                    const participant = { id: socket.id, room, name: user };
+                    socketRoom.push(participant);
+                    roomParticipants[room] = roomParticipants[room] || [];
+                    roomParticipants[room].push(participant);
+                    chat.to(room).emit('roomPresence', { user, action: 'joined' });
+                    chat.to(room).emit('roomUsers', participantsInRoom(room));
+                    chat.to(room).emit('numusers', participantsInRoom(room).length);
+                    socket.emit('joined', room);
                 });
-
-                return chat.in(room).emit("joined", room);
             });
 
             socket.on("leaveRoom", (room, user) => {
-
-                for (i = 0; i < socketRoom.length; i++) {
-                    if (socketRoom[i][0] == socket.id) {
-                        socketRoom.splice(i, 1);
-                        socket.leave(room);
-                        chat.to(room).emit("notice", user + " has left the chat");
-                    }
-                }
-
-                for (j = 0; j < socketRoomnum.length; j++) {
-                    if (socketRoomnum[j][0] == room) {
-                        socketRoomnum[j][1] = socketRoomnum[j][1] - 1;
-                        if (socketRoomnum[j][1] == 0) {
-                            socketRoomnum.splice(j, 1);
-                        }
-                    }
+                const participant = socketRoom.find(entry => entry.id === socket.id);
+                if (participant && participant.room === room && participant.name === user) {
+                    removeSocketFromRoom(socket, true);
+                    socket.emit('left', room);
+                    chat.to(room).emit('numusers', participantsInRoom(room).length);
                 }
             });
 
             socket.on("disconnect", () => {
-                chat.emit("disconnect");
-                for (i = 0; i < socketRoom.length; i++) {
-                    if (socketRoom[i][0] == socket.id) {
-                        socketRoom.splice(i, 1);
-                    }
+                const participant = socketRoom.find(entry => entry.id === socket.id);
+                const room = participant && participant.room;
+                removeSocketFromRoom(socket, true);
+                if (room) {
+                    chat.to(room).emit('numusers', participantsInRoom(room).length);
                 }
-
-                for (j = 0; j < socketRoomnum.length; j++) {
-                    if (socketRoomnum[j][0] == socket.room) {
-                        socketRoomnum[j][1] = socketRoomnum[j][1] - 1;
-                    }
-                }
-                console.log("client disconected");
             });
         });
     }
