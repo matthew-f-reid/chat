@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server-mongo.js",
     "test": "mocha ./test"
   },
   "author": "",
