@@ -4,10 +4,9 @@ const cors = require('cors');
 var bodyParser = require('body-parser');
 const http = require('http').Server(app);
 const server = require('./listen.js');
-const MongoClient = require('mongodb').MongoClient;
 const io = require('socket.io')(http);
 const sockets = require('./socket.js');
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -19,6 +18,7 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+app.get('/health', (req, res) => res.sendStatus(200));
 sockets.connect(io);
 
 const ops = require('./dbOps.js');

@@ -59,6 +59,20 @@ On the PC, open <http://localhost:4200>. The frontend uses port `4200`; the API 
 
 The frontend derives its API and Socket.IO host from the address used to open the site. Do not use `localhost` on the phone: that refers to the phone itself.
 
+## Deploy online with GitHub Pages, Render, and MongoDB Atlas
+
+GitHub Pages hosts only static files; it cannot run the Express/Socket.IO server or MongoDB. This project uses GitHub Pages for the Angular frontend, Render for the API and Socket.IO server, and MongoDB Atlas for the database.
+
+1. Create a MongoDB Atlas cluster and a database user for the app. Configure Atlas network access to allow connections from the Render service. Keep the database username and password private.
+2. Create a Render web service from this repository using its `render.yaml` Blueprint. Render uses `server/` as the service root and prompts for `MONGODB_URI`; enter the Atlas connection string there. Do not commit the connection string. Verify the service's `/health` endpoint returns HTTP 200.
+3. In the GitHub repository, open **Settings → Secrets and variables → Actions → Variables** and add the repository variable `CHATTER_BACKEND_URL` with the HTTPS origin shown by Render (for example, `https://your-service.onrender.com`, with no path).
+4. In **Settings → Pages**, set the build and deployment source to **GitHub Actions**. This replaces the current branch-based Pages workflow.
+5. Push to `master` or manually run **Deploy Angular app to GitHub Pages** from the Actions tab. The workflow builds Angular for the `/chat/` project-site path, injects the Render URL into a runtime config file, and includes an SPA fallback for client-side routes. The published site is `https://matthew-f-reid.github.io/chat/`.
+
+The Pages workflow fails before deployment if `CHATTER_BACKEND_URL` is missing or is not an HTTPS origin. The Angular app continues to use the local `http://<current-host>:3000` backend when no runtime URL is configured, preserving local development.
+
+Render and Atlas must be provisioned and configured in their respective accounts; the repository workflow cannot create the database, supply private credentials, or perform those account-side steps. Free Render services may sleep when idle, so the first request after inactivity can take longer.
+
 ## Data storage
 
 The backend connects to the MongoDB database named `chatter`:
@@ -66,7 +80,7 @@ The backend connects to the MongoDB database named `chatter`:
 - `users` stores account profiles (`name`, `email`, `role`, `password`) and saved account notifications.
 - `groups` stores groups, their member lists, rooms, room-member lists, and pending group/room join requests.
 
-The application currently expects MongoDB at `localhost:27017`; configure MongoDB and start it before the backend.
+For local development, the backend defaults to MongoDB at `localhost:27017`; set `MONGODB_URI` to use another database. The hosted deployment reads its Atlas connection string from Render's `MONGODB_URI` environment variable.
 
 ## Useful commands
 
