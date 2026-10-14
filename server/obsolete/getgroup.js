@@ -1,9 +1,12 @@
 const fs = require('fs');
+const path = require('path');
+
+const groupsPath = path.join(__dirname, 'JSON', 'groups.json');
 
 //get groups from file
 
 module.exports = function(req, res){
-  fs.readFile('./JSON/groups.json', 'utf8', (err, jsonString) =>{
+  fs.readFile(groupsPath, 'utf8', (err, jsonString) =>{
     if(err){
       console.error("file read failed: ", err);
       return;

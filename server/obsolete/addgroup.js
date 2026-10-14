@@ -1,8 +1,11 @@
 const fs = require('fs');
+const path = require('path');
+
+const groupsPath = path.join(__dirname, 'JSON', 'groups.json');
 
 module.exports = function(req, res){
     groups = [];
-  fs.readFile('./JSON/groups.json', 'utf8', (err, jsonString) =>{
+  fs.readFile(groupsPath, 'utf8', (err, jsonString) =>{
     if(err){
       console.error("file read failed: ", err);
       return;
@@ -31,7 +34,7 @@ module.exports = function(req, res){
 
                         file[i].users.push({name:user});
                         
-                        fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
+                        fs.writeFile(groupsPath, JSON.stringify(file, null, "\t"), function(err){
                             if(err) throw err;
                         });
                         i = file.length;
@@ -48,7 +51,7 @@ module.exports = function(req, res){
           group.rooms = [];
           group.users = [{"name": user}];
           file.push(group);
-          fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
+          fs.writeFile(groupsPath, JSON.stringify(file, null, "\t"), function(err){
             if(err) throw err;
           });
             res.send(file);
@@ -65,7 +68,7 @@ module.exports = function(req, res){
           }
           room = {"name": roomName, roomUsers:[{"name": userName}]};
           file[index].rooms.push(room);
-          fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
+          fs.writeFile(groupsPath, JSON.stringify(file, null, "\t"), function(err){
             if(err) throw err;
           });
           res.send(file);
@@ -88,7 +91,7 @@ module.exports = function(req, res){
                   }
                   if(count != 1){
                     file[i].rooms[j].roomUsers.push({"name": userName});
-                    fs.writeFile('./JSON/groups.json', JSON.stringify(file, null, "\t"), function(err){
+                    fs.writeFile(groupsPath, JSON.stringify(file, null, "\t"), function(err){
                       if(err) throw err;
                     });
                     i = file.length;
@@ -111,7 +114,7 @@ module.exports = function(req, res){
               i = file.length;
             }
           }
-          fs.writeFile('./JSON/groups.json', JSON.stringify(fileGroup, null, "\t"), function(err){
+          fs.writeFile(groupsPath, JSON.stringify(fileGroup, null, "\t"), function(err){
             if(err) throw err;
           });
           res.send(fileGroup);
@@ -133,7 +136,7 @@ module.exports = function(req, res){
               }
             }
           }
-          fs.writeFile('./JSON/groups.json', JSON.stringify(fileGroup, null, "\t"), function(err){
+          fs.writeFile(groupsPath, JSON.stringify(fileGroup, null, "\t"), function(err){
             if(err) throw err;
           });
           res.send(fileGroup);
@@ -157,7 +160,7 @@ module.exports = function(req, res){
               }
             }
           }
-          fs.writeFile('./JSON/groups.json', JSON.stringify(fileArray, null, "\t"), function(err){
+          fs.writeFile(groupsPath, JSON.stringify(fileArray, null, "\t"), function(err){
             if(err) throw err;
           });
           res.send(fileArray);
@@ -188,7 +191,7 @@ module.exports = function(req, res){
             }
           }
           
-          fs.writeFile('./JSON/groups.json', JSON.stringify(fileArray, null, "\t"), function(err){
+          fs.writeFile(groupsPath, JSON.stringify(fileArray, null, "\t"), function(err){
             if(err) throw err;
           });
           res.send(file);
